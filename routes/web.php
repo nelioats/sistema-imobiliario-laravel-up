@@ -240,5 +240,5 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
 //para que os campos de checkbox nao fiquem com campos vazios, caso seja altrado pelo usuario. Inserimos os meotodos set do modelo USER
 
 //==================================================================================
-//
+// UPLOAD DE ARQUIVO DO USUARIO
 //==================================================================================
