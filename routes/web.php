@@ -192,7 +192,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
 
 
 //==================================================================================
-////CADASTRO DE USUÁRIO - VALIDANDO OS DADOS COM O METODO FILLABLE NO MODELO
+//CADASTRO DE USUÁRIO - VALIDANDO OS DADOS COM O METODO FILLABLE NO MODELO
 //==================================================================================
 //no modelo users, inserimos todos os campos no metodo fillable.
 //dentro do controlador $user = new User(); user->fill($request->all()); para testar as validacoes do metodo fillable
@@ -204,7 +204,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
 
 
 //==================================================================================
-////CADASTRO DE USUÁRIO - PERSISTIR OS DADOS NO BANCO
+//CADASTRO DE USUÁRIO - PERSISTIR OS DADOS NO BANCO
 //==================================================================================
 //criar a migration para inserir as colunas na tabela usuarios
 //php artisan make:migration alter_users_table --table=users
@@ -216,13 +216,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
 
 
 //==================================================================================
-////LISTAGEM DE USUÁRIO - 
+//LISTAGEM DE USUÁRIO - 
 //==================================================================================
 //No metodo index, do controlador UserController, listar todos usuarios e enviar para view
 //na view, como metodo foreach do blade chamar a coleção recebida pela view
 
 //==================================================================================
-////EDIÇÃO DE USUÁRIO - 
+//EDIÇÃO DE USUÁRIO - 
 //==================================================================================
 //dentro da view admin/users/index, no campo nome, criamos um link com a rota: {{route('admin.users.edit',['user'=>$user->id])}}. para enviar o id do usuario que ir´sofrer a edição
 //no metodo edit do controlador UserController, recebemos o id, filtramos com where, e enviamos para view admin/users/edit
@@ -233,8 +233,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
 
 
 //==================================================================================
-////RECEBENDO DADOS DO USUÁRIO - FORMATANDO OS DADOS PARA APRESENTAÇÃO - NO MODELO
+//RECEBENDO DADOS DO USUÁRIO - FORMATANDO OS DADOS PARA APRESENTAÇÃO - NO MODELO
 //==================================================================================
 //Durante a inserção dos dados, no modelo usamos o set. Para receber os dados e formata-los, usamos o get
 //No metodo update do controlador UserController, usamos nosso formrequest criado(UserRequest)
 //para que os campos de checkbox nao fiquem com campos vazios, caso seja altrado pelo usuario. Inserimos os meotodos set do modelo USER
+
+//==================================================================================
+//
+//==================================================================================
