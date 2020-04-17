@@ -23,20 +23,29 @@
 
     <div class="dash_content_app_box">
         <section class="app_users_home">
+
+            @foreach ($users as $user)
+                
+         
+
             <article class="user radius">
                 <div class="cover"
-                     style="background-size: cover; background-image: url('assets/images/avatar.jpg');"></div>
-                <h4>Gustavo Web</h4>
+                style="background-size: cover; background-image: url({{$user->url_cover}});"></div>
+            <h4>{{$user->name}}</h4>
 
                 <div class="info">
-                    <p>gustavo@upinside.com.br</p>
-                    <p>Desde <?= date('d/m/Y'); ?></p>
+                    <p>{{$user->email}}</p>
+                    <p>Desde {{date('d/m/Y'), strtotime($user->last_login_at)}}</p>
                 </div>
 
                 <div class="actions">
-                    <a class="icon-cog btn btn-orange" href="" title="">Gerenciar</a>
+                <a class="icon-cog btn btn-orange" href="{{route('admin.users.edit',['user'=>$user->id])}}" title="">Gerenciar</a>
                 </div>
             </article>
+
+            @endforeach
+
+
         </section>
     </div>
 </section>

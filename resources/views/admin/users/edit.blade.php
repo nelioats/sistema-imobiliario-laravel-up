@@ -39,7 +39,11 @@
 
 
             
-
+            @if (session()->exists('message'))
+            <div class="message message-green">
+                <p class="icon-asterisk">{{session()->get('message')}}</p>
+            </div>  
+            @endif            
 
 
 

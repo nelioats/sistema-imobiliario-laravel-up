@@ -240,5 +240,34 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
 //para que os campos de checkbox nao fiquem com campos vazios, caso seja altrado pelo usuario. Inserimos os meotodos set do modelo USER
 
 //==================================================================================
-// UPLOAD DE ARQUIVO DO USUARIO
+// UPLOAD DE ARQUIVO DO USUARIO NA EDIÇÃO DO USUARIO
 //==================================================================================
+// criar o link da pasta storage , na pasta public com o seguinte comando:
+//php artisan storage:link
+//devido a coluna 'cover' que ira armazenar o caminho para imagem nao estar criada. E para nao perder a infomração ja registrada no banco. Inserimos a coluna na migration (só para registro) e adicionamos a coluna de forma manula no banco de dados.
+
+//Para que seja salva somente uma imagem por usuario.
+//Para verificar se já existe alguma imagem por usuario.
+//É necessário que seja deletada tanto imagem do storage como o diretorio do banco.
+
+//criando o diretorio onde será armazenado a imagem
+// Verificar se é diferente de vazio, se sim, salva a imagem.
+
+//==================================================================================
+// UPLOAD DE ARQUIVO DO USUARIO NA CRIAÇÃO DO USUARIO
+//==================================================================================
+//enviamos a mesma funcao usada na edição, mudando o nome da variavel
+// if(!empty($request->file('cover'))){
+//     //no banco dentro da coluna cover = $request->file('cover') = arquivo | ->store('user') = diretorio
+//     $user->cover = $request->file('cover')->store('user');
+// }
+
+//==================================================================================
+// APRESENTAR AS IMAGENS DO TIME NA VIEW TEAM
+//==================================================================================
+//carregar todos usuarios administradores, ou seja, todos que tem o valor 1, no banco
+//pra exibir as imagens, vamos no modelo User e inserios um get para imagem no STORAGE
+//para cortar as imagens para se enquadrar no formato circulo, usamos o pluggin do robson CROPPER (necessario inserir o arquivo no app/Support e executar o comando   ===>  composer require coffeecode/cropper)
+//dentro de Cropper inserimos o metodo flusher
+//dentro do modelo User, no getUrlCoverAttribute,  modificamos para receber o metodo Cropper
+//devido o cropper foi criado uma imagem no cache, como miniatura e caso seja atualiada a imagem é necessario apagar o cache com o flush no contralador na funcao upload

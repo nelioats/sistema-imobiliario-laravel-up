@@ -3,6 +3,8 @@
 namespace App;
 
 use DateTime;
+use App\Support\Cropper;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -74,6 +76,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
 
 
     //===================================================
@@ -214,6 +218,23 @@ class User extends Authenticatable
         return  number_format($value,2,',','.');
     }
 
+    //===================================================
+    //GET PARA OBTER IMAGEM NO STORAGE
+    //===================================================
+
+    // public function getUrlCoverAttribute(){
+    //     return Storage::url($this->cover);
+    // }
+    // COM CROPPER
+    public function getUrlCoverAttribute(){
+
+        //criamos essa condição no caso de usuario sem imagem, pois necessita dos atributos preenchidos.
+        if(!empty($this->cover)){
+            return Storage::url(Cropper::thumb($this->cover,500,500));
+        }else{
+            return '';
+        }
+    }
 
 
 }
