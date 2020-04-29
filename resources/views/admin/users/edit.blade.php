@@ -28,7 +28,7 @@
 
 
 
-
+        {{-- APRESENTAÇÃO DE ERROS AO SUBMETER O FORMULARIO --}}
             @if ($errors->all())
                 @foreach ($errors->all() as $error)  
                     <div class="message message-orange">
@@ -38,7 +38,7 @@
             @endif
 
 
-            
+            {{-- APRESENTAÇÃO DE ERROS PELO CONTROLADOR, SE FOI ATUALIZADO OU SALVO COM SUCESSO --}}
             @if (session()->exists('message'))
             <div class="message message-green">
                 <p class="icon-asterisk">{{session()->get('message')}}</p>
@@ -72,6 +72,9 @@
                 @csrf
                 @method('PUT')
 
+                {{-- enviamos esse id para ser obtido pelas regras do formrequest --}}
+                <input type="hidden" name="id" value="{{$user->id}}}">
+
 
 
                 <div class="nav_tabs_content">
@@ -102,6 +105,10 @@
                                 </select>
                             </label>
 
+                            {{-- NO VALUE, USAMOS OLD old('document') , PARA FICAR COM O MESMO VALOR AO SUBMETER O FORMULARIO, CASO SEJA UM USUARIO JA EXISTE,
+                             OU SEJA, UMA EDIÇÃO, OS DADOS SERÃO CARREGADOS ATRAVES DO $user->document  --}}
+
+                             
                             <label class="label">
                                 <span class="legend">*CPF:</span>
                                 <input type="tel" class="mask-doc" name="document" placeholder="CPF do Cliente"
@@ -535,3 +542,5 @@
 
 
 @endsection
+
+

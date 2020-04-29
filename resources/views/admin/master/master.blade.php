@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{url(mix('backend/assets/css/libs.css'))}}">
     <link rel="stylesheet" href="{{url(mix('backend/assets/css/boot.css'))}}"/>
     <link rel="stylesheet" href="{{url(mix('backend/assets/css/style.css'))}}"/>
-    <link rel="icon" type="image/png" href="assets/images/favicon.png"/>
+    <link rel="icon" type="image/png" href="{{asset('backend/assets/images/favicon.png')}}"/>
 
     {{-- essa section é para receber os stilos das paginas filho --}}
     @hasSection ('css')    
@@ -36,7 +36,7 @@
         <img class="dash_sidebar_user_thumb" src="{{url(asset('backend/assets/images/avatar.jpg'))}}" alt="" title=""/>
 
             <h1 class="dash_sidebar_user_name">
-                <a href="">Gustavo Web</a>
+                <a href="">NATS Web</a>
             </h1>
         </article>
 
@@ -44,10 +44,10 @@
             <li class="dash_sidebar_nav_item {{ isActive('admin.home') }}">
                 <a class="icon-tachometer" href="{{ route('admin.home') }}">Dashboard</a>
             </li>
-            <li class="dash_sidebar_nav_item {{ isActive('admin.users') }}"><a class="icon-users" href="{{ route('admin.users.index') }}">Clientes</a>
+            <li class="dash_sidebar_nav_item {{ isActive('admin.users') }} {{ isActive('admin.companies') }}"><a class="icon-users" href="{{ route('admin.users.index') }}">Clientes</a>
                 <ul class="dash_sidebar_nav_submenu">
                     <li class="{{ isActive('admin.users.index') }} "><a href="{{ route('admin.users.index') }}">Ver Todos</a></li>
-                    <li class=""><a href="dashboard.php?app=companies/index">Empresas</a></li>
+                    <li class="{{ isActive('admin.companies.index') }}"><a href="{{route('admin.companies.index')}}">Empresas</a></li>
                     <li class="{{ isActive('admin.users.team') }}"><a href="{{ route('admin.users.team') }}">Time</a></li>
                     <li class="{{ isActive('admin.users.create') }}"><a href="{{ route('admin.users.create') }}">Criar Novo</a></li>
                 </ul>

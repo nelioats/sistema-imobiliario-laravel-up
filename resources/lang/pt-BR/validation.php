@@ -219,7 +219,7 @@ return [
 
         //CONJUGE
         'spouse_name' => 'nome do cônjuge',
-        'document' => 'CPF do cônjuge',
+        'spouse_document' => 'CPF do cônjuge',
         'spouse_document_secondary' => 'RG do cônjuge',
         'spouse_document_secondary_complement' => 'orgão expedidor do cônjuge',
         'spouse_date_of_birth' => 'data de nascimento do cônjuge',
@@ -227,6 +227,13 @@ return [
         'spouse_occupation' => 'profissão do cônjuge',
         'spouse_income' => 'renda do cônjuge',
         'spouse_company_work' => 'empresa do cônjuge',
+
+        //COMPANY
+        'user' => 'usuário',
+        'social_name' => 'razão social',
+        'alias_name' => 'nome fantasia',
+        'document_company' => 'CNPJ',
+        'document_company_secondary' => 'inscrição estadual',
 
     ],
 ];

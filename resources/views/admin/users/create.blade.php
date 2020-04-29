@@ -28,7 +28,7 @@
 
 
 
-
+            {{-- APRESENTAÇÃO DE ERROS --}}
             @if ($errors->all())
                 @foreach ($errors->all() as $error)  
                     <div class="message message-orange">
@@ -387,21 +387,12 @@
                                 <div class="companies_list">
                                     <div class="no-content mb-2">Não foram encontrados registros!</div>
 
-                                    <div class="companies_list_item mb-2">
-                                        <p><b>Razão Social:</b> UpInside Treinamentos LTDA</p>
-                                        <p><b>Nome Fantasia:</b> UpInside Treinamentos</p>
-                                        <p><b>CNPJ:</b> 12.3456.789/0001-12 - <b>Inscrição Estadual:</b>1231423421</p>
-                                        <p><b>Endereço:</b> Rodovia Dr. Antônio Luiz de Moura Gonzaga, 3339 Bloco A Sala
-                                            208</p>
-                                        <p><b>CEP:</b> 88048-301 <b>Bairro:</b> Campeche <b>Cidade/Estado:</b>
-                                            Florianópolis/SC</p>
-                                    </div>
+                                   
+
+
                                 </div>
 
-                                <p class="text-right">
-                                    <a href="javascript:void(0)" class="btn btn-green btn-disabled icon-building-o">Cadastrar
-                                        Nova Empresa</a>
-                                </p>
+                               
                             </div>
                         </div>
                     </div>
@@ -415,73 +406,7 @@
 
                             <div class="app_collapse_content">
                                 <div id="realties">
-                                    <div class="realty_list">
-                                        <div class="realty_list_item mb-1">
-                                            <div class="realty_list_item_actions_stats">
-                                                <img src="assets/images/realty.jpeg" alt="">
-                                                <ul>
-                                                    <li>Venda: R$ 450.000,00</li>
-                                                    <li>Aluguel: R$ 2.000,00</li>
-                                                </ul>
-                                            </div>
-
-                                            <div class="realty_list_item_content">
-                                                <h4>Casa Residencial - Campeche</h4>
-
-                                                <div class="realty_list_item_card">
-                                                    <div class="realty_list_item_card_image">
-                                                        <span class="icon-realty-location"></span>
-                                                    </div>
-                                                    <div class="realty_list_item_card_content">
-                                                        <span class="realty_list_item_description_title">Bairro:</span>
-                                                        <span class="realty_list_item_description_content">Campeche</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="realty_list_item_card">
-                                                    <div class="realty_list_item_card_image">
-                                                        <span class="icon-realty-util-area"></span>
-                                                    </div>
-                                                    <div class="realty_list_item_card_content">
-                                                        <span class="realty_list_item_description_title">Área Útil:</span>
-                                                        <span class="realty_list_item_description_content">150m&sup2;</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="realty_list_item_card">
-                                                    <div class="realty_list_item_card_image">
-                                                        <span class="icon-realty-bed"></span>
-                                                    </div>
-                                                    <div class="realty_list_item_card_content">
-                                                        <span class="realty_list_item_description_title">Domitórios:</span>
-                                                        <span class="realty_list_item_description_content">4 Quartos<br><span>Sendo 2 suítes</span></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="realty_list_item_card">
-                                                    <div class="realty_list_item_card_image">
-                                                        <span class="icon-realty-garage"></span>
-                                                    </div>
-                                                    <div class="realty_list_item_card_content">
-                                                        <span class="realty_list_item_description_title">Garagem:</span>
-                                                        <span class="realty_list_item_description_content">4 Vagas<br><span>Sendo 2 cobertas</span></span>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="realty_list_item_actions">
-                                                <ul>
-                                                    <li class="icon-eye">1234 Visualizações</li>
-                                                </ul>
-                                                <div>
-                                                    <a href="" class="btn btn-blue icon-eye">Visualizar Imóvel</a>
-                                                    <a href="" class="btn btn-green icon-pencil-square-o">Editar
-                                                        Imóvel</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="no-content">Não foram encontrados registros!</div>
                                 </div>
                             </div>

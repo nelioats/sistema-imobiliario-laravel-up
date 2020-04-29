@@ -7,27 +7,34 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class User extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+  
     public function authorize()
     {
         return Auth::check();
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
+
+    public function all($keys = null){
+       return $this->validateFields(parent::all());
+    }
+
+    //funcao para validação do cpf(removendo a mascara para checagem)
+    public function validateFields(array $inputs){
+        $inputs['document'] = str_replace(['.','-'], '', $this->request->all()['document']);
+        //retornamos o array input com o valor do cpf ja formatado para validação do FormRequest
+        return $inputs;
+    }
+
+
+
+
     public function rules()
     {
         return [
             'name' => 'required|min:10|max:191',
             'genre' => 'in:male,female,other',
-            'document' => 'required|min:11|max:14|unique:users',
+            //na condição ternaria: é diferente de vazio o campo id, se sim, inserimos todas as condiçoes contatenando com a exceção do id logado
+            'document' => (!empty($this->request->all()['id']) ?  'required|min:11|max:14|unique:users,document,'. $this->request->all()['id'] : 'required|min:11|max:14|unique:users,document'),
             'document_secondary' => 'required|min:8|max:12',
             'document_secondary_complement' => 'required',
             'date_of_birth' => 'required|date_format:d/m/Y',
@@ -53,7 +60,7 @@ class User extends FormRequest
             'cell' => 'required',
            
             //ACESSO
-            'email' => 'required|email|unique:users',
+            'email' => (!empty($this->request->all()['id']) ? 'required|email|unique:users,email,'.$this->request->all()['id'] : 'required|email|unique:users,email'),
             'password' => 'required',
 
             //CONJUGE

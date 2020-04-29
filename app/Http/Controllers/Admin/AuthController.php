@@ -19,13 +19,12 @@ class AuthController extends Controller
     public function showLoginForm(){
 
         //criando usuario de teste
-        // $user = new User;
-        // $user->name = 'nelioo';
-        // $user->email = 'nelioats@gmail.com';
-        // $user->password = 12345;
-        // $user->save();
+        // $user = User::where('id',2);
+        //  $user->update([
+        //     'email' => 'nelioats@gmail.com',
+        //     'password' => password_hash(12345, PASSWORD_DEFAULT)]);
 
-       // verificando se ja existe uma sessao criada
+    //    // verificando se ja existe uma sessao criada
         if(Auth::check() === true){
             return redirect()->route('admin.home');
         }

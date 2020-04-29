@@ -94,7 +94,6 @@ class UserController extends Controller
 
         //criando o diretorio onde será armazenado a imagem
         // Verificar se é diferente de vazio, se sim, salva a imagem.
- 
         if(!empty($request->file('cover'))){
             //no banco dentro da coluna cover = $request->file('cover') = arquivo | ->store('user') = diretorio
             $user->cover = $request->file('cover')->storeAs('user', Str::slug($request->name, '-') . '-' . str_replace('.', '', microtime(true)) . '.' . $request->file('cover')->extension());

@@ -53,6 +53,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
         //
         Route::get('users/team','UserController@team')->name('users.team');
         Route::resource('users','UserController');
+
+        //rotas para EMPRESA
+        Route::resource('companies','CompanyController');
+
     });
     
 
@@ -271,3 +275,83 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
 //dentro de Cropper inserimos o metodo flusher
 //dentro do modelo User, no getUrlCoverAttribute,  modificamos para receber o metodo Cropper
 //devido o cropper foi criado uma imagem no cache, como miniatura e caso seja atualiada a imagem é necessario apagar o cache com o flush no contralador na funcao upload
+
+//==================================================================================
+// DANDO CONDIÇÃO CASO SEJA SELCIONADO AS OPCÇOES CASADO OU SEPARADO (PAGINA EDIT E CREATE)
+// NESSE CASO NÃO TERÁ QUE APARECER AS OPÇOES DO CONJUGE - FEITO COM JQUERY JS
+//==================================================================================
+//criamos um script no final da pagina edit. Nele atraves de jquery identificamos se o usuario selecionou casado ou solteiro. Caso nao tenha selecionado essas dusa opções, iremos deifinir a div do conjuge com disabled
+//para que seja chamado ao executar a pagina, foi criado uma funcao e chamamos essa funcao todo momento que é carregada a pagina
+//para que o script seja executdo dtoda ve que for alterado, será necessario criar uma funcao change e chamar ela todo momento que algo for mudado no select civil_status
+//para que esse SCRIPT tmb seja executado na pagina NAS PAGINAS CREATE E EDIT, removemos ele para nosso script.js
+
+//==================================================================================
+// PARA INSERIR A EXCEÇÃO NO MOMENTO DA EDIÇÃO DE CAMPOS UNIQUE(EMAIL E CPF) PAGINA EDIT
+//==================================================================================
+// a validação unique  funcionava antes somente no email, devido a mascara do cpf que empre alterava o valor do cpf
+// no formRequest temos uma funcção all($keys = null) para receber todos valores dos inputs
+//na funcao validateFields,  inserimos no campos cpf, um valor formatodo removendo todos os pontos e traços. E retornamos seu valor para $inputs
+//*******************INFORMAOCAO DICA************************* */
+//no modelo, temos o setDocumentAttribute, que remove todos os pontos e traços do cpf para ser salvo somente os numeros
+//o formRequest nao verificava antes,(só verificava o email) prq no momento do formRquest verificar o cpf que é um campo UNIQUE, ele vem com ponto e traços,diferente do valor no banco. Por isso passava e bloqueava somente no email
+//agora com a verificação no formRequest, removendo os pontos e traços antes de ter a validação, teremos o bloqueio do cpf
+//******************************************** */
+//na funcção RULES DO FORMREQUEST, iremos inserir uma exceção para document e email(exceção pois o proprio usuario nao precisa alterar seu cpf)
+//agora precisamos enviar o id pelo form da pagina edit, PARA SER RECEBIDO NO FORMREQUEST
+
+//===============================================================================================================
+//===============================================================================================================
+// INICIANDO O MODELO -> EMPRESA
+//===============================================================================================================
+//===============================================================================================================
+//criar o modelo junto com a migration: php artisan make:model Company -m
+//criar o controlador(podemos ter criado o controlador junto com o modelo, mas criamos separado para direcionar para um diretorio Admin\)
+//php artisan make:controller Admin\\CompanyController --resource
+//criar as rotas dentro do group admin Route::resource('companies','CompanyController');
+//definindo as rotas com as views
+//para ativar o menu ativo é necessário chamar na master o isActive('admin.companies')
+//definindo as atriutos da migration
+//definimos o campo (user) como unsignedInterger, pois é um campo assinado que nao aceita numero negativos(no caso é o id do usuario)
+//inserimos esse campo como chave estrangeira que faz referencia para tabela usuarios. ($table->foreign('users')->references('id')->on('users')->onDelete('CASCADE'))
+// rodar as mgrations = php artisan migrate   
+//no modelo definir os campos com metodo fillable
+//para criar as regras dos inputs, precisamos criar nosso Request
+//php artisan make:request Admin\\Company
+//importar o Auth::check(); use Illuminate\Support\Facades\Auth;
+//inseiri no controlador nosso Request, como tem o mesmo nome do modelo, criamos um alias, no USE da classe
+//inserir as regras no request
+//inserir o comanso old no form da pagina create para que persista os dados
+//inserimos no validation(resource/lang) as traduçoes para os novos campos do formulario(empresa). No caso social_name, alias_name... 
+//==================================================================================
+// TRATANDO OS DADOS DA EMPRESA PARA SALVAR NO BANCO - SET
+//==================================================================================
+//No modelo Company, iremos inserir as funcões SET
+//comecamos com o SET do setDocumentCompanyAttribute (lembrando a obrigatoriedade da nomecaltura - setXXXAttribute) utiliando a funcao clearField como helper
+//ja com registro de empresas no banco, no controlador, no metodo index, listamos todas as empresas
+//para listar o nome do usuario ou todos os campos, é necessario configurar a relação entre as tabelas.
+//==================================================================================
+// CONFIGURANDO AS RELAÇÕES ENTRE AS TABELAS (RELACAO FEITA NA TABELA EMPRESA)
+//==================================================================================
+//No modelo User, criamos uma funcao companies que retorna um metodo hasMany() (um para muitos - um usuario para muitas empresas)
+//No  modelo Company, criamos uma funcao user quer retorna um metodo belongsTo() (muitos para um) - varias empresas para um usuario)
+//para listar um usuario atraves da companies(no caso na pagina index companies) $company->user()->first()->atributos do usuario (user - nome do metodo criado dentro do modelo/ first para receber somente o primeiro, pode ter varios)
+//==================================================================================
+// TRABALHANDO COM A PAGINA DE EDIÇÃO DE EMPRESA
+//==================================================================================
+//no controlador, na function edit, selecionamos o id enviado pela index e retornamos para view edit.blade.php com a companhia do id selecionado
+//fazemos uma copia da pagina create para edit
+//nos campos value, alem do old ?? carregamos os dados do usuario ja existente
+//no action do form, mudamos para update a rota e enviamos o id que será alterado
+//inserimos o verbo PUT, no form com ajuda do blade  @method('PUT')
+//NO METODO DE UPDATE
+//no controlador update, usamos nosso request
+//==================================================================================
+// RECEBENDO OS DADOS DO BANCO FORMATADOS - GET
+//==================================================================================
+//no modelo company, usamos o metodo get e formatamos o valor do cnpj para ser apresentado na pagina index
+///==================================================================================
+// LISTANDO OS USAURIOS NO SELECT NA PAGINA EDIÇÃO DA EMPRESA
+//==================================================================================
+//dentro do Companycontroller na funcao edit, chamamos o modelo User e damos um get (usamos o orderBy para facilitar na pesquisa)
+//dentro da pagina edit de companies no select, criamos um foreach para percorrer os usuarios
+//para deixar ja o dono da empresa selecionado, inserimos uma ternaria {{$user->id === $company->user ? 'selected': ''}} 

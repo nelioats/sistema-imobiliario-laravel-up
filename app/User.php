@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Company;
 
 class User extends Authenticatable
 {
@@ -77,6 +78,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    public function companies(){
+        //um para muitos(Modelo Company(qual tabela quero m relacionar),'Qual campo m relaciono com a tabela Companies (user da tabela companies)','id da tabela users')
+        return $this->hasMany(Company::class,'user','id');
+    }
 
 
 
