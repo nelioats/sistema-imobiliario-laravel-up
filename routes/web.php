@@ -57,6 +57,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
         //rotas para EMPRESA
         Route::resource('companies','CompanyController');
 
+        //rotas para PROPERTY
+        Route::resource('properties','PropertyController');
+
     });
     
 
@@ -299,6 +302,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
 //na funcção RULES DO FORMREQUEST, iremos inserir uma exceção para document e email(exceção pois o proprio usuario nao precisa alterar seu cpf)
 //agora precisamos enviar o id pelo form da pagina edit, PARA SER RECEBIDO NO FORMREQUEST
 
+
+
 //===============================================================================================================
 //===============================================================================================================
 // INICIANDO O MODELO -> EMPRESA
@@ -350,8 +355,32 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
 //==================================================================================
 //no modelo company, usamos o metodo get e formatamos o valor do cnpj para ser apresentado na pagina index
 ///==================================================================================
-// LISTANDO OS USAURIOS NO SELECT NA PAGINA EDIÇÃO DA EMPRESA
+// LISTANDO OS USAURIOS NO SELECT NA PAGINA EDIÇÃO E CRIAÇÃO DA EMPRESA
 //==================================================================================
 //dentro do Companycontroller na funcao edit, chamamos o modelo User e damos um get (usamos o orderBy para facilitar na pesquisa)
 //dentro da pagina edit de companies no select, criamos um foreach para percorrer os usuarios
 //para deixar ja o dono da empresa selecionado, inserimos uma ternaria {{$user->id === $company->user ? 'selected': ''}} 
+//==================================================================================
+// LISTANDO AS EMPRESAS DENTRO DA PAGINA DE EDIÇÃO DO USUARIO
+//==================================================================================
+//na pagina de edição de usuario(route(admin.users.edit)) na parte de empresas, vamos listar as empresas  {{-- se existe compania para esse usuario(metodo companies criado atraves da relação que criamos no modelo user)
+// no botao criar empresa, definimos a route create empresas e enviamos o id do usuario
+//na pagina create, temos que carregar a pagina ja com o select selecionado pelo usuario, para isso:
+//no contrador do company, no metodo create inserimos o request (para receber o id enviada pelo botao criar empresa). Nele verificamos se ja existe um id ou carregamos todos usuarios
+//no metodo create retornamos um unico usuario no caso se for uma criação de empresa atraves da pagina do usuario
+//no metodo create retornamos um varios usuario no caso se for uma criação de empresa atraves da pagina criar empresas
+
+
+//===============================================================================================================
+//===============================================================================================================
+// INICIANDO O MODELO -> IMOVEIS
+//===============================================================================================================
+//===============================================================================================================
+//php artisan make:model Property -m
+//php artisan make:controller Admin\\PropertyController --resource
+//criamos as rotas no arquivo web.php 
+//configurando os links na view admin.master.master.blade.php ({{ isActive('admin.properties') }})
+//definindo as views dentro do controlador
+//na view create, inserir o @csrf no form | route(create)
+//no metodo store do controlador. Instanciar o modelo Property e usaro metodo fill
+//no modelo, inserir o metodo protected $fillable = [ ];

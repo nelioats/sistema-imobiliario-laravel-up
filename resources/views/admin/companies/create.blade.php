@@ -49,8 +49,23 @@
                 <label class="label">
                     <span class="legend">Responsável Legal:</span>
                     <select name="user" class="select2">
-                        <option value="1" selected>Nélio</option>
-                        <option value="" selected>Nome (document)</option>
+                        
+                        <option value="" selected>Selecione um responsável legal</option>
+
+                        @foreach ($users->all() as $user) 
+
+                            {{-- verificação em caso de criacao de empresa atraves do pagina usuario  --}}
+                            {{-- se existe o selected recebido pelo controlador --}}
+                            @if (!@empty($selected))
+                            <option value="{{$user->id}}" {{$user->id === $selected->id ? 'selected' : ''}} >{{$user->name}} ({{$user->document}})</option>
+                            {{-- se não existe o selected recebido pelo controlador ele recebe null --}}     
+                            @else
+                            <option value="{{$user->id}}" >{{$user->name}} ({{$user->document}})</option>
+                            @endif
+                            
+                        @endforeach
+
+
                     </select>
                     <p style="margin-top: 4px;">
                         <a href="" class="text-orange icon-link" style="font-size: .8em;" target="_blank">Acessar

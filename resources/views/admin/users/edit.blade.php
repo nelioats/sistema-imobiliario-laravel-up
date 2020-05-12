@@ -401,21 +401,35 @@
                             <div class="app_collapse_content">
 
                                 <div class="companies_list">
-                                    <div class="no-content mb-2">Não foram encontrados registros!</div>
 
-                                    <div class="companies_list_item mb-2">
-                                        <p><b>Razão Social:</b> UpInside Treinamentos LTDA</p>
-                                        <p><b>Nome Fantasia:</b> UpInside Treinamentos</p>
-                                        <p><b>CNPJ:</b> 12.3456.789/0001-12 - <b>Inscrição Estadual:</b>1231423421</p>
-                                        <p><b>Endereço:</b> Rodovia Dr. Antônio Luiz de Moura Gonzaga, 3339 Bloco A Sala
-                                            208</p>
-                                        <p><b>CEP:</b> 88048-301 <b>Bairro:</b> Campeche <b>Cidade/Estado:</b>
-                                            Florianópolis/SC</p>
-                                    </div>
+
+                                    {{-- se existe compania para esse usuario(metodo companies criado atraves da relação que criamos no modelo user) --}}
+                                    @if ($user->companies()->get())
+
+                                         @foreach ($user->companies()->get() as $company)
+                                        
+                                        <div class="companies_list_item mb-2">
+                                            <p><b>Razão Social:</b>{{$company->social_name}}</p>
+                                            <p><b>Nome Fantasia:</b> {{$company->alias_name}}</p>
+                                            <p><b>CNPJ: </b> {{$company->document_company}} <b>Inscrição Estadual: </b>{{$company->document_company_secondary}}</p>
+                                            <p><b>Endereço: </b> {{$company->street}}, {{$company->number}} {{$company->complement}}</p>
+                                            <p><b>CEP:</b>{{$company->zipcode}} <b>Bairro:</b> {{$company->neighborhood}} <b>Cidade/Estado:</b>
+                                                {{$company->city}} / {{$company->state}}</p>
+                                        </div>
+
+                                        @endforeach
+                                    @else
+                                         <div class="no-content mb-2">Não foram encontrados registros!</div>
+                                    @endif
+
+
+                                   
+
+                             
                                 </div>
 
                                 <p class="text-right">
-                                    <a href="javascript:void(0)" class="btn btn-green btn-disabled icon-building-o">Cadastrar
+                                    <a href="{{route('admin.companies.create', ['user'=>$user->id])}}" class="btn btn-green icon-building-o">Cadastrar
                                         Nova Empresa</a>
                                 </p>
                             </div>

@@ -19,10 +19,22 @@ class CompanyController extends Controller
     }
 
  
-    public function create()
+    public function create(Request $request)
     {
+
         $users = User::orderBy('name')->get();
-        return view('admin.companies.create',compact('users'));
+
+        //se existe e é diferente de vazio
+        if(!empty($request->user)){
+            $user = User::where('id',$request->user)->first();
+        }
+
+        
+        return view('admin.companies.create',[
+            'users' => $users,
+            //se for diferente de vazio ? devolve $user : devolve null 
+            'selected'  => (!empty($user) ? $user : null)
+        ]);
     }
 
    
