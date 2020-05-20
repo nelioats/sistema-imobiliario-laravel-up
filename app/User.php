@@ -3,12 +3,13 @@
 namespace App;
 
 use DateTime;
+use App\Company;
+use App\Property;
 use App\Support\Cropper;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Company;
 
 class User extends Authenticatable
 {
@@ -80,8 +81,15 @@ class User extends Authenticatable
 
 
     public function companies(){
-        //um para muitos(Modelo Company(qual tabela quero m relacionar),'Qual campo m relaciono com a tabela Companies (user da tabela companies)','id da tabela users')
+         //um para muitos = um usuario pode ter varios companhias
+        //um para muitos(Qual modelo quero me relacionar,  'qual id desse modelo me faz referencia'   , 'qual meu id faz referencia a ele')
         return $this->hasMany(Company::class,'user','id');
+    }
+
+    public function properties(){
+        //um para muitos = um usuario pode ter varios imoveis
+        //um para muitos(Qual modelo quero me relacionar,  'qual id desse modelo me faz referencia'   , 'qual meu id faz referencia a ele')
+        return $this->hasMany(Property::class,'user','id');
     }
 
 

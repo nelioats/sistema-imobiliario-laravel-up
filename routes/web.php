@@ -37,36 +37,41 @@ use Illuminate\Support\Facades\Route;
 //=========================================================
 //para o grupo de rotas. criamos o prefixo: admin/ Namespace: Admin/ Nome da rota: admin.(concatenação)
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
 
     // rotas de login
-    Route::get('/','AuthController@showLoginForm')->name('login');
-    Route::post('login','AuthController@login')->name('login.do');
-    
+    Route::get('/', 'AuthController@showLoginForm')->name('login');
+    Route::post('login', 'AuthController@login')->name('login.do');
+
     // rotas protegidas
     Route::group(['middleware' => ['auth']], function () {
 
         // dashboard home
-        Route::get('home','AuthController@home')->name('home');
+        Route::get('home', 'AuthController@home')->name('home');
 
         // dashboard usuarios
         //
-        Route::get('users/team','UserController@team')->name('users.team');
-        Route::resource('users','UserController');
+        Route::get('users/team', 'UserController@team')->name('users.team');
+        Route::resource('users', 'UserController');
 
         //rotas para EMPRESA
-        Route::resource('companies','CompanyController');
+        Route::resource('companies', 'CompanyController');
 
         //rotas para PROPERTY
-        Route::resource('properties','PropertyController');
 
+        //rotas para check e remoção das imagens sem refresh na pagina com AJAX
+        //post pois vai receber parametros
+        Route::post('properties/image-set-cover', 'PropertyController@imageSetCover')->name('properties.imageSetCover');
+        //delete, pois irá remover um registro
+        Route::delete('properties/image-remove', 'PropertyController@imageRemove')->name('properties.imageRemove');
+
+
+        Route::resource('properties', 'PropertyController');
     });
-    
+
 
     // logout
-    Route::get('logout','AuthController@logout')->name('logout');
-
-    
+    Route::get('logout', 'AuthController@logout')->name('logout');
 });
 
 //=========================================================
@@ -376,11 +381,68 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as'=>'admin.'], func
 // INICIANDO O MODELO -> IMOVEIS
 //===============================================================================================================
 //===============================================================================================================
-//php artisan make:model Property -m
+//php artisan make:model Property -m (criar model e migration)
 //php artisan make:controller Admin\\PropertyController --resource
 //criamos as rotas no arquivo web.php 
 //configurando os links na view admin.master.master.blade.php ({{ isActive('admin.properties') }})
 //definindo as views dentro do controlador
 //na view create, inserir o @csrf no form | route(create)
-//no metodo store do controlador. Instanciar o modelo Property e usaro metodo fill
-//no modelo, inserir o metodo protected $fillable = [ ];
+//no metodo store do controlador. Instanciar o modelo Property e usar metodo fill
+//no modelo, inserir o metodo protected $fillable = [ e todos os campos recebidos do formulário ];
+//configurar a migration CreatePropertiesTable
+//rodar o comando php artisan migrate
+//SEMPRE ACONTECE ERRO NO MOMENTO DE CRIAR A RELAÇAO DEVIDO O CURSO TABALHAR COM LARAVEL 5.3 QUE USA INT NO ID, E ESTOU USANDO O LARAVEL 7.0 ONDE USA BIGINT NO ID
+//criar o formRequest de imoveis - php artisan make:request Admin\\Property
+//lembrando de inserir Auth::check(); na funcao authorize
+//inserir o Property request na funcao create e update do controlador
+//inserir o campo old{{}} no formulario create para fazer a persistencia dos dados
+//inserir bloco de mensagens de erros ao submeter o formulario no na pagina create
+//apos todas regras criadas
+//trabalhar na camada de Modelo, para configurar os SET(tratar os campos para salvar no banco de dados) e os GET(obter de forma certa os campos do banco de dados) das atributos necessarios
+//apos testar todos os campos, no controlador PropertyController na funcao store, chamamos o metodo create do modelo Property colocando todos sem request all para serem salvos no banco
+//apos salvar no banco, direcionar para route de edição com id da criação e a mensagem de salva com sucesso
+//na metodo edit no controlador PropertyController, pesquisamos pelo id recebido e direcionamos para view edit com o id recebido
+//na view edit, no meotod old, adicionamos outra consição para ´persistir os dados, agora com os dados vindo do banco
+//no modelo Property, criamos os metodos GET para formatar o valor recebdo no banco
+//ATUALIZANDO
+//no view edit, modificamos sua rota para update e enviamos o id . Tambem inserimos o metodo put no formulario
+//no PropertyController no metodo update,selecionamos o id e chamamos o metodo save
+//no caso dos checkbox, caso eles sejam alterados, nao consguimos atualizar eles no banco,pois eles nao sao enviados para banco quando nao sao selecionaods, para isso chamamos novamnete os metodos SET deles dentro do metodo update do controlador, para definir o valor com 0 nesses casos
+//listar os usuarios nas views properties para esolha do usuario
+//no metodo edit e create de PropertyController. criamos uma variavel user para receber todos usuarios do modelo User e com orderBy 
+//==================================================================================
+// LISTANDO OS IMOVEIS DENTRO DA PAGINA DE EDIÇÃO DO USUARIO
+//==================================================================================
+//criamos uma relação dentro do modelo User, com o modelo Property =  public function properties() hasMany - um para muitos
+//criamos uma relação dentro do modelo Property, com o modelo User =  public function user() belongsTo - muitos para um
+//com a relação criada, agora podemos dentro do usuario (na view edit) chamar todos os imoveis que estao vinculados ao seu id - atraves da instancia (modelo) do usuario chamamos o meotodo properties()->get() para listar todos os imoveis
+//==================================================================================
+// LISTANDO TODOS IMOVEIS DENTRO DE IMOVEIS - VER TODOS
+//==================================================================================
+//pegamos todo o bloco que apresenta os imoveis dentro do usuario e colar em properties.index
+//no PropertyController no metodo index, instanciamos o modelo Property e envimos todos imoveis pela view
+//==================================================================================
+// CARREGANDO AS IMAGENS DOS IMOVEIS
+//==================================================================================
+//usamos um script(no final da pagina edit) para exibir um preview de todas imagens carregas
+
+
+//===============================================================================================================
+//===============================================================================================================
+// CRIAREMOS UM MODELO, MIGRATION, CONTROLADOR : EXCLUSIVAMENTE PARA SALVAR IMAGENS CARREGADAS NOS IMOVEIS NAS VIEWS EDIT E CREATE
+//===============================================================================================================
+//===============================================================================================================
+//php artisan make:model PropertyImage -m
+//php artisan migrate (criamos a relação no banco, deu erro no laravel)
+// caso esqueca de fazer algo na migration php artisan migrate:rollback --step=1 (retorna uma migracao)
+//no modelo preencher o protected $fillable = [];
+//dentro do controlador PropertyController no metodo update, Vamos inserir uma condiçao para verifivar se existe imagens no regquest-allFiles()
+//se existir imagens, criamos um for para percorrer o array de imagens e para cada imagem, instanciamos o modelo(objeto) PropertyImage para salvar cada imagem em uma linha no banco de dados. E na asta storage dando o path com id property na frene 
+//para exibir as imagens salvas no banco na view  properties.edit teremos que criar um relacionammento entre as imagens e os imovies(properties)
+//como cada imovel possui uma imagem ou varias. Criaremos uma relação hasMany no Modelo Property
+//com relação criada, criamos um foreach, para apresentar todas imagens. Pegando somente o path da imagem não seraá apresento. PAra isso criamos um metodo GET dentro do modelo PropertyImage onde retornará a URL das imagens, utiliando o helper Cropper, (plugin do robson que pode ser substituido pelo thbmbanis do bootstrap)
+
+//==================================================================================
+// DELETANDO AS IMAGENS COM REQUISIÇÃO AJAX SEM REFRESH NA PAGINA
+//==================================================================================
+//criamos duas rotas para da imagem de check e delete

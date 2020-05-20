@@ -56,7 +56,6 @@ mix.sass(
 
     .scripts(
         [
-            "resources/views/admin/assets/js/tinymce/tinymce.min.js",
             "resources/views/admin/assets/js/datatables/js/jquery.dataTables.min.js",
             "resources/views/admin/assets/js/datatables/js/jquery.dataTables.responsive.min.js",
             "resources/views/admin/assets/js/select2/js/select2.min.js",

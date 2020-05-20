@@ -446,25 +446,36 @@
                             <div class="app_collapse_content">
                                 <div id="realties">
                                     <div class="realty_list">
+
+
+                                    
+                                        {{-- listar todos imoveis vinculados ao usuario --}}
+                                        @if ($user->properties()->get())
+                                        @foreach ($user->properties()->get() as $property)
+                                            
+
+                                            
+
+
                                         <div class="realty_list_item mb-1">
                                             <div class="realty_list_item_actions_stats">
-                                                <img src="assets/images/realty.jpeg" alt="">
+                                                <img src="{{url(asset('backend/assets/images/realty.jpeg'))}}" alt="">
                                                 <ul>
-                                                    <li>Venda: R$ 450.000,00</li>
-                                                    <li>Aluguel: R$ 2.000,00</li>
+                                                    <li>Venda: R$ {{$property->sale_price}}</li>
+                                                    <li>Aluguel: R$ {{$property->rent_price}}</li>
                                                 </ul>
                                             </div>
 
                                             <div class="realty_list_item_content">
-                                                <h4>Casa Residencial - Campeche</h4>
+                                                <h4># {{$property->id}} {{$property->category}} - {{$property->type}}</h4>
 
                                                 <div class="realty_list_item_card">
                                                     <div class="realty_list_item_card_image">
                                                         <span class="icon-realty-location"></span>
                                                     </div>
                                                     <div class="realty_list_item_card_content">
-                                                        <span class="realty_list_item_description_title">Bairro:</span>
-                                                        <span class="realty_list_item_description_content">Campeche</span>
+                                                        <span class="realty_list_item_description_title">Bairro: </span>
+                                                        <span class="realty_list_item_description_content">{{$property->neighborhood}}</span>
                                                     </div>
                                                 </div>
 
@@ -474,7 +485,7 @@
                                                     </div>
                                                     <div class="realty_list_item_card_content">
                                                         <span class="realty_list_item_description_title">Área Útil:</span>
-                                                        <span class="realty_list_item_description_content">150m&sup2;</span>
+                                                        <span class="realty_list_item_description_content">{{$property->area_util}}m&sup2;</span>
                                                     </div>
                                                 </div>
 
@@ -484,7 +495,7 @@
                                                     </div>
                                                     <div class="realty_list_item_card_content">
                                                         <span class="realty_list_item_description_title">Domitórios:</span>
-                                                        <span class="realty_list_item_description_content">4 Quartos<br><span>Sendo 2 suítes</span></span>
+                                                        <span class="realty_list_item_description_content">{{$property->bathrooms + $property->suites}} Quartos<br><span>Sendo {{$property->suites}} suítes</span></span>
                                                     </div>
                                                 </div>
 
@@ -494,7 +505,7 @@
                                                     </div>
                                                     <div class="realty_list_item_card_content">
                                                         <span class="realty_list_item_description_title">Garagem:</span>
-                                                        <span class="realty_list_item_description_content">4 Vagas<br><span>Sendo 2 cobertas</span></span>
+                                                        <span class="realty_list_item_description_content">{{$property->garage + $property->garage_covered}} Vagas<br><span>Sendo {{$property->garage_covered}} cobertas</span></span>
                                                     </div>
                                                 </div>
 
@@ -506,13 +517,24 @@
                                                 </ul>
                                                 <div>
                                                     <a href="" class="btn btn-blue icon-eye">Visualizar Imóvel</a>
-                                                    <a href="" class="btn btn-green icon-pencil-square-o">Editar
+                                                     <a href="{{route('admin.properties.edit',['property' => $property->id])}}" class="btn btn-green icon-pencil-square-o">Editar
                                                         Imóvel</a>
                                                 </div>
                                             </div>
                                         </div>
+
+
+                                        @endforeach
+  
+                                        @else
+
+                                        <div class="no-content">Não foram encontrados registros!</div>
+                    
+                                        @endif
+
+
                                     </div>
-                                    <div class="no-content">Não foram encontrados registros!</div>
+                                    
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,5 @@
+<!-- defini o arquivo como txt pois tava apreesntando erro no momento de migrar -->
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;

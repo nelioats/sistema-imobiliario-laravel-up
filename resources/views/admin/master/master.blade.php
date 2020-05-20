@@ -15,7 +15,8 @@
       @yield('css')
     @endif
 
-    {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
 
     <title>UpAdmin - Site Control</title>
 </head>
@@ -106,6 +107,8 @@
 
 
 <script src="{{url(mix('backend/assets/js/jquery.js'))}}"></script>
+{{-- utilizando o asset pois nao ta sendo processdo com o mix --}}
+<script src="{{url(asset('backend/assets/js/tinymce/tinymce.min.js'))}}"></script> 
 <script src="{{url(mix('backend/assets/js/libs.js'))}}"></script>
 <script src="{{url(mix('backend/assets/js/scripts.js'))}}"></script>
 
