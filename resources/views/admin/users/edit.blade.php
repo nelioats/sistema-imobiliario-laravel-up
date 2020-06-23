@@ -454,12 +454,10 @@
                                         @foreach ($user->properties()->get() as $property)
                                             
 
-                                            
-
-
+                              
                                         <div class="realty_list_item mb-1">
                                             <div class="realty_list_item_actions_stats">
-                                                <img src="{{url(asset('backend/assets/images/realty.jpeg'))}}" alt="">
+                                                <img src="{{$property->cover()}}" alt="">
                                                 <ul>
                                                     <li>Venda: R$ {{$property->sale_price}}</li>
                                                     <li>Aluguel: R$ {{$property->rent_price}}</li>

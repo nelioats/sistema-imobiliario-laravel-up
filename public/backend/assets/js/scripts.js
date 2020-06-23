@@ -277,6 +277,37 @@ $('select[name="civil_status"]').change(function() {
 //FIM DO SCRIPT CASADO SOLTEIRO....CONJUGE
 //====================================================================
 
+//====================================================================
+//SCRIPT PARA OS CHECKBOX  SALE E RENT
+//para desativar ou ativar os inputs relacionados a esses checkox - sale_price  e rent_price
+//====================================================================
+
+$('input[type="checkbox"][name="sale"]').change(function() {
+    // se le tiver checado
+    //get(0) primeiro elemento
+    //liberar para edicao o campo sale_price
+    if ($(this).get(0).checked) {
+        $('input[name="sale_price"]').attr("disabled", false);
+    } else {
+        $('input[name="sale_price"]').attr("disabled", true);
+    }
+});
+
+$('input[type="checkbox"][name="rent"]').change(function() {
+    // se le tiver checado
+    //get(0) primeiro elemento
+    //liberar para edicao o campo sale_price
+    if ($(this).get(0).checked) {
+        $('input[name="rent_price"]').attr("disabled", false);
+    } else {
+        $('input[name="rent_price"]').attr("disabled", true);
+    }
+});
+
+//====================================================================
+//FIM - SCRIPT PARA OS CHECKBOX  SALE E RENT
+//====================================================================
+
 // TINYMCE INIT
 
 tinyMCE.init({

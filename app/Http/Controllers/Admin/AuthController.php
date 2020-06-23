@@ -12,11 +12,12 @@ class AuthController extends Controller
 {
 
 
-//======================================================================
-//APRESENTA TELA LOGIN
-//======================================================================
+    //======================================================================
+    //APRESENTA TELA LOGIN
+    //======================================================================
 
-    public function showLoginForm(){
+    public function showLoginForm()
+    {
 
         //criando usuario de teste
         // $user = User::where('id',2);
@@ -24,36 +25,37 @@ class AuthController extends Controller
         //     'email' => 'nelioats@gmail.com',
         //     'password' => password_hash(12345, PASSWORD_DEFAULT)]);
 
-    //    // verificando se ja existe uma sessao criada
-        if(Auth::check() === true){
+        //    // verificando se ja existe uma sessao criada
+        if (Auth::check() === true) {
             return redirect()->route('admin.home');
         }
         return view('admin.index');
     }
 
-//======================================================================
-//APRESENTA TELA HOME
-//======================================================================
+    //======================================================================
+    //APRESENTA TELA HOME
+    //======================================================================
 
-    public function home(){
+    public function home()
+    {
         return view('admin.dashboard');
     }
 
-//======================================================================
-//RECEBE REQUISIÇAO PARA EFETUAR O LOGIN
-//======================================================================
+    //======================================================================
+    //RECEBE REQUISIÇAO PARA EFETUAR O LOGIN
+    //======================================================================
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
 
         //se todos campos não estiverem preenchidos
-        if(($request->email == '') || ($request->password == '') ){
-            Session::flash('success','Ops, informe todos os dados solicitados!');
+        if (($request->email == '') || ($request->password == '')) {
+            Session::flash('success', 'Ops, informe todos os dados solicitados!');
             return redirect()->route('admin.login');
-
         }
         //se o email não for válido
-        if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)){
-            Session::flash('success','Ops, informe um e-mail válido!');
+        if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+            Session::flash('success', 'Ops, informe um e-mail válido!');
             return redirect()->route('admin.login');
         }
 
@@ -64,45 +66,41 @@ class AuthController extends Controller
 
         //verifica se as credencias são as mesmas do banco.
         $credentials = $request->only('email', 'password');
-        
+
         if (Auth::attempt($credentials)) {
-            
+
 
             //salvar o utlimo acesso e o ip do usuario
             $this->autenticado($request->getClientIp());
 
             return redirect()->route('admin.home');
-        }else{
-           
-            Session::flash('success','Ops, usuário e senha não correspondem!');
+        } else {
+
+            Session::flash('success', 'Ops, usuário e senha não correspondem!');
             return redirect()->route('admin.login');
         }
-
-
-
-
-
     }
 
-//======================================================================
-//DURANTE A REQUISICAO DO LOGIN É SALVO O IP E A DATA DO ACESSO
-//======================================================================
+    //======================================================================
+    //DURANTE A REQUISICAO DO LOGIN É SALVO O IP E A DATA DO ACESSO
+    //======================================================================
 
-    public function autenticado(string $ip){
-        $user = User::where('id',Auth::user()->id);
+    public function autenticado(string $ip)
+    {
+        $user = User::where('id', Auth::user()->id);
         $user->update([
             'last_login_at' => date('Y-m-d H:i:s'),
-            'last_login_ip' => $ip]);
+            'last_login_ip' => $ip
+        ]);
     }
 
-//======================================================================
-//LOGOUT
-//======================================================================  
+    //======================================================================
+    //LOGOUT
+    //======================================================================  
 
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
         return redirect()->route('admin.login');
     }
-
-
 }

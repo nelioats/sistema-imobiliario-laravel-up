@@ -4,7 +4,10 @@ namespace App;
 
 use App\User;
 use App\PropertyImage;
+use App\Support\Cropper;
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Property extends Model
 {
@@ -69,6 +72,28 @@ class Property extends Model
         //um para muitos(Qual modelo quero me relacionar,  'qual id desse modelo me faz referencia'   , 'qual meu id faz referencia a ele')
         return $this->hasMany(PropertyImage::class, 'property', 'id')
             ->orderBy('cover', 'ASC');
+    }
+
+    //metodo para retornar somente a imagem principal(a que tem o cover como 1)
+    public function cover()
+    {
+        //para imoves com imagem principal setada
+        $images = $this->images();
+        $cover = $images->where('cover', 1)->first(['path']); //quero obter somente a coluna path
+
+        //para imoveis sem imagem principal setada (cover é null). retornará a primeira imagem do imovel
+        if (!$cover) {
+            $images = $this->images();
+            $cover = $images->first(['path']);
+        }
+        //para imoveis sem imagem (definir imagem padrão)
+        //em caso do cover tiver vazio ou nao existir nenhum path no diretorio
+        if (empty($cover['path']) || !File::exists('../public/storage/' . $cover['path'])) {
+            return url(asset('backend/assets/images/default-image.png'));
+        }
+
+
+        return Storage::url(Cropper::thumb($cover['path'], 1366, 768));
     }
 
 

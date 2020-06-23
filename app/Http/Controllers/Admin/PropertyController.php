@@ -6,8 +6,11 @@ use App\User;
 use App\Property;
 use App\PropertyImage;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\Property as PropertyRequest;
+use App\Support\Cropper;
 
 class PropertyController extends Controller
 {
@@ -124,13 +127,47 @@ class PropertyController extends Controller
         //
     }
 
-    public function imageSetCover()
+    public function imageSetCover(Request $request)
     {
-        return response()->json('vc chegou ate aqui!');
+        //Em PropertyController imageSetCover, pegamos o id da imagem selecionada 
+        //Depois pegamos todas as imagens do imovel e definimos seu cover como null
+        //Em seguida pegamos a imagem selecionada e definimos como true
+        //criamos uma variavel json success e retornamos ela
+
+        $imageSetCover = PropertyImage::where('id', $request->image)->first();
+        $allImage = PropertyImage::where('property', $imageSetCover->property)->get();
+
+        foreach ($allImage as $image) {
+            $image->cover = null;
+            $image->save();
+        }
+
+        $imageSetCover->cover = true;
+        $imageSetCover->save();
+
+        $json = ['success' => true];
+
+
+        return response()->json($json);
     }
 
-    public function imageRemove()
+    public function imageRemove(Request $request)
     {
-        return response()->json('vc chegou ate aqui para remover!');
+
+        //Em PropertyController imageRemove, pegamos o id da imagem selecionada
+        //deletamos ela da storage
+        //limpamos o cache dela do cropper
+        //deletamos a imagem
+        //criamos uma variavel json sucess e retornamos ela
+
+
+        $imageDelete = PropertyImage::where('id', $request->image)->first();
+        Storage::delete($imageDelete->path);
+        Cropper::flush($imageDelete->path);
+        $imageDelete->delete();
+
+        $json = ['success' => true];
+
+        return response()->json($json);
     }
 }

@@ -58,15 +58,19 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
         Route::resource('companies', 'CompanyController');
 
         //rotas para PROPERTY
-
         //rotas para check e remoção das imagens sem refresh na pagina com AJAX
         //post pois vai receber parametros
         Route::post('properties/image-set-cover', 'PropertyController@imageSetCover')->name('properties.imageSetCover');
         //delete, pois irá remover um registro
         Route::delete('properties/image-remove', 'PropertyController@imageRemove')->name('properties.imageRemove');
 
-
         Route::resource('properties', 'PropertyController');
+
+        //rotas para CONTRACTS
+        Route::post('contracts/get-data-owner', 'ContractController@getDataOwner')->name('contracts.getDataOwner');
+        Route::post('contracts/get-data-acquirer', 'ContractController@getDataAdquirente')->name('contracts.getDataAquirer');
+        Route::post('contracts/get-data-property', 'ContractController@getDataProperty')->name('contracts.getDataProperty');
+        Route::resource('contracts', 'ContractController');
     });
 
 
@@ -445,4 +449,104 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
 //==================================================================================
 // DELETANDO AS IMAGENS COM REQUISIÇÃO AJAX SEM REFRESH NA PAGINA
 //==================================================================================
-//criamos duas rotas para da imagem de check e delete
+// criamos 2 links de check e delete
+// para cada link criamos uma rota
+// criamos seus controladores(com resquest)
+// vericamos as rotas php artisan route:list
+// inserimos javascript:void(0) no href para não causar nenhuma ação de link 
+// criamos uma tag data-action para definir as rotas de cada botao e enviar o id de cada imagem
+// comecando com javascript
+// criamos uma classe, image-set-cover ,em cada botao apenas para capturarmos no javascript
+// no javascript pegamos o evento click dessa atraves dessa classe
+// event.preventDefault(); para remover evento padrao dela
+// pagamos a propria classe com o let button = $(this);
+// enviamos atraves de POST a nossa requisição que esta em data-action('');
+//  $.post(button.data('action'),{},function(response){
+//              alert(response);
+//     },'json');
+//para a requisição delete temos: 
+//     $('.image-remove').click(function(event){
+//             event.preventDefault();
+
+//         let button = $(this);
+//         $.ajax({
+//             url:button.data('action'),
+//             type:'DELETE',
+//             dataType:'json',
+//             success: function(response){
+//                 alert(response);
+//             }
+//         })
+
+//     });
+// atraves do PHP será capaz de receber a variavel response. No caso colocamos no PropertyController imageSetCover e imageRemove
+// Devido o uso do POST no laravel é necessario o crsfToken
+// -nas metas do cabcalho do site:
+//     <meta name="csrf-token" content="{{ csrf_token() }}">
+// -no javscript:
+//       $.ajaxSetup({
+//                 headers: {
+//                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+//                 }
+//         });
+//Em PropertyController imageSetCover, pegamos o id da imagem selecionada 
+//Depois pegamos todas as imagens do imovel e definimos seu cover como null
+//Em seguida pegamos a imagem selecionada e definimos seu cover como true
+//criamos uma variavel json sucess e retornamos ela
+// voltando para o javascript, dentro da function post criamos uma condição, checando se retornou true, caso sim, removemos todo btn-green das imagens e adidionamos apenas na imagem que recebeu o click
+//Em PropertyController imageRemove, pegamos o id da imagem selecionada
+//deletamos ela da storage
+//limpamos o cache dela do cropper
+//deletamos a imagem
+//criamos uma variavel json sucess e retornamos ela
+//voltando para o javascript, dentro da function delete, criamos uma condição para verificar se retornou true, caso sim, pegamos a classe(div) que contem o bloco da imagem que foi selecionda para ser deletada, adicionamos um fadeout e inserimos um this.remove;
+//===========================================================
+//com a imagem principal ja com o cover como 1, nas views , admin.properties.index  |  admin.users.edit  iremos apresentar a imagem principal(a q tem o cover como 1)
+//criamos um metodo dentro do modelo Property para retornar a imagem que tem o cover 1.
+//dentro desse metodo criamos outras condiçoes para imoveis que nao tem a imagem setada como principal e para imoveis que nem tem imagens e por fim, retornamos a url da imagem
+
+
+
+//===============================================================================================================
+//===============================================================================================================
+// INICIANDO O MODELO -> CONTRATO
+//===============================================================================================================
+//===============================================================================================================
+//criar o model junto com a migration
+//php artisan make:model Contract -m    
+//criar uma rota resource no documento web.php
+//criar o controlador
+//php artisan make:controller Admin\\ContractController --resource 
+//linkar no controlador a view index
+//personlizar a index
+//linkar no controlador a view create
+//personlizar a view create
+//preencher a migration
+//php artisan migrate
+//necessario parametrizar nosso modelo com o metodo FILLABLE e os atributos
+//=================
+//no modelo Users, criaremos um SCOPE ( scopeLessors e scopeLessees)para retornar os locatarios(lessee) e os locadores(lessors)
+//atraves do metodo create do ContractController recebemos esse SCOPE e enviamos para view CREATE
+//==========================================
+//CRIANDO OS GATILHOS COM JQUERY PARA CARREGAR AS INFORMAÇÕES DO PROPRIETARIO SELECIONADO SEM REFRESH
+//==========================================
+// as informaçoes estao na view contracs.create.blade e no metodo getDataOwner do ContractController (carregar as infomraçoes do conjuge e companies do proprietario sem refresh)
+// para o adquirente , carregar as informaçoes sem refresh, utilizamos os mesmos procedimentos,
+//criamos a rota 
+//criamos o controlador
+//criamos o data-action no formulario da view, para definir a rota
+//criamos o gatilho POST com o jquey na view, ira chamar o data-action, que será direcionado para contralor onde esse ira retornar um REPONSE json com os dados para apresentar.
+//no jquey tratamos esse RESPONSE, para ser apresentado na view.
+// para os properties , carregar as informaçoes sem refresh, utilizamos os mesmos procedimentos das companies;
+//=============================================
+//para apresentar os valores dos contratos sem refresh apos selecionar um imovel:
+//criamos uma rota: Route::post('contracts/get-data-property', 'ContractController@getDataProperty')->name('contracts.getDataProperty');
+//criamos a function para rota
+//na view no select do imovel, inserimos um data-action com a rota criada
+//na view, no jquery, selecionamos o select e a cada alteração sua, criamos uma variavel para receber o valor selecionado e enviamos esse valor atraves do post e a rota definida no data-action para o contraldor
+//o controlaor trata a valor recebido e retorna os dados do imovel selecionado para view
+//na view no jquery, sera recebido os valores do imovel e será apresentado nos campos apropriados
+//=============================================
+//configirando o checkbox vendas e aluguel, em todo sistema para desativar os inputs caso seja selecionado o checkbox
+//sendo em todo sistema, sera configurado no resourses/views/admin/assets/js/scripts.js 
+//apos a atualização nm run dev

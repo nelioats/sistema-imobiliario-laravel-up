@@ -378,61 +378,11 @@
                                 <img src="{{$image->url_cropped}}" alt="">
 
 
-                                {{-- criamos 2 links de check e delete
-                                para cada link criamos uma rota
-                                criamos seus controladores
-                                vericamos as rotas php artisan route:list
-                                inserimos javascript:void(0) no href para não causar nenhuma ação de link 
-                                criamos uma tag data-action para definir as rotas de cada botao
-                                comecando com javascript
-                                criamos uma classe, image-set-cover ,em cada botao apenas para capturarmos no javascript
-                                no javascript pegamos o evento click dessa atraves dessa classe
-                                event.preventDefault(); para remover evento padrao dela
-                                pagamos a propria classe com o let button = $(this);
-                                enviamos atraves de POST a nossa requisição que esta em data-action('');
-                                 $.post(button.data('action'),{},function(response){
-                                         alert(response);
-                                },'json');
-                                para a requisição delete temos: 
-                                $('.image-remove').click(function(event){
-                                        event.preventDefault();
+                                <div class="property_image_actions">
 
-                                    let button = $(this);
-                                    $.ajax({
-                                        url:button.data('action'),
-                                        type:'DELETE',
-                                        dataType:'json',
-                                        success: function(response){
-                                            alert(response);
-                                        }
-                                    })
-
-                                });
-                                atraves do PHP será capaz de receber a variavel response. No caso colocamos no PropertyController imageSetCover e imageRemove
-                                Devido o uso do POST no laravel é necessario o crsfToken
-                                -nas metas do cabcalho do site:
-                                <meta name="csrf-token" content="{{ csrf_token() }}">
-                                -no javscript:
-                                  $.ajaxSetup({
-                                            headers: {
-                                                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-                                            }
-                                        });
-
-                                --}}
-
-
-
-
-
-                                <div class="property_image_actions" meta name="csrf-token" content="{{ csrf_token() }}">
-
-                                <a href="javascript:void(0)" class="btn btn-small icon-check icon-notext image-set-cover"  data-action="{{route('admin.properties.imageSetCover')}}"></a>
-                                    <a href="javascript:void(0)" class="btn btn-red btn-small icon-times icon-notext image-remove" data-action="{{route('admin.properties.imageRemove')}}"></a>
+                                <a href="javascript:void(0)" class="btn btn-small icon-check icon-notext image-set-cover {{$image->cover == true ? "btn-green":""}}"  data-action="{{route('admin.properties.imageSetCover',['image'=>$image->id])}}"></a>
+                                    <a href="javascript:void(0)" class="btn btn-red btn-small icon-times icon-notext image-remove" data-action="{{route('admin.properties.imageRemove',['image'=>$image->id])}}"></a>
                                 </div>
-
-
-
 
 
                             </div>
@@ -462,13 +412,11 @@
 <script>
     $(function () {
 
-
-
-            $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     }
+    });
 
 
         $('input[name="files[]"]').change(function (files) {
@@ -496,21 +444,29 @@
 
             let button = $(this);
             $.post(button.data('action'),{},function(response){
-                alert(response);
+                if(response.success == true){
+                    $('.property_image').find('a.btn-green').removeClass('btn-green');
+                    button.addClass('btn-green');
+                }
             },'json');
 
         });
 
+
         $('.image-remove').click(function(event){
                 event.preventDefault();
-
             let button = $(this);
             $.ajax({
                 url:button.data('action'),
                 type:'DELETE',
                 dataType:'json',
                 success: function(response){
-                    alert(response);
+                    if(response.success == true){
+                        //closest, retorna a primeira classe pai que encontrar
+                        button.closest('.property_image_item').fadeOut(function(){
+                            $(this).remove();
+                        });
+                    }
                 }
             })
 
