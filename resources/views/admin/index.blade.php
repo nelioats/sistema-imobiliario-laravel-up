@@ -65,7 +65,12 @@
 <script src="{{url(mix('backend/assets/js/jquery.js'))}}"></script>
 <script src="{{url(mix('backend/assets/js/login.js'))}}"></script>
 <script src="{{url(mix('backend/assets/js/toastr.js'))}}"></script>
-<script>@if (Session::has('success'))toastr.success("{{ Session::get('success')}}",'',{"progressBar": true})@endif</script>
+<script>
+
+@if (Session::has('success'))toastr.success("{{ Session::get('success')}}",'',{"progressBar": true})@endif
+@if (Session::has('error'))toastr.error("{{ Session::get('error')}}",'',{"progressBar": true})@endif
+
+</script>
 
 
 </body>

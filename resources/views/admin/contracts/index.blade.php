@@ -26,11 +26,14 @@
     
     @include('admin.contracts.filter')
 
+
+
     <div class="dash_content_app_box">
         <div class="dash_content_app_box_stage">
             <table id="dataTable" class="nowrap hover stripe" width="100" style="width: 100% !important;">
                 <thead>
                 <tr>
+                    <th>#</th>
                     <th>Locador</th>
                     <th>Locatário</th>
                     <th>Negócio</th>
@@ -39,13 +42,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><a href="" class="text-orange">Robson V. Leite</a></td>
-                    <td><a href="" class="text-orange">Gustavo Web</a></td>
-                    <td>Locação</td>
-                    <td><?= date('d/m/Y'); ?></td>
-                    <td>12 meses</td>
-                </tr>
+
+                @foreach ($contracts as $contract)
+                        
+                    <tr>
+                        <td><a href="{{ route('admin.contracts.edit',['contract' => $contract->id])}}" class="text-orange">{{($contract->id)}}</a></td>
+                        <td><a href="{{ route('admin.users.edit',['user' => $contract->ownerObject->id])}}" class="text-orange">{{$contract->ownerObject->name}}</a></td>
+                        <td><a href="{{ route('admin.users.edit',['user' => $contract->acquirerObject->id])}}" class="text-orange">{{$contract->acquirerObject->name}}</a></td>
+                        <td>{{($contract->sale == true ? 'Venda' : 'Locação')}}</td>
+                        <td>{{$contract->start_at}}</td>
+                        <td>{{$contract->deadline}} meses</td>
+                    </tr>
+
+                @endforeach
+
                 </tbody>
             </table>
         </div>

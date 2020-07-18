@@ -201,7 +201,7 @@ return [
         'occupation' => 'profissão',
         'income' => 'renda',
         'company_work' => 'empresa',
-         //Endereço
+        //Endereço
         'zipcode' => 'CEP',
         'street' => 'rua',
         'number' => 'número',
@@ -234,6 +234,27 @@ return [
         'alias_name' => 'nome fantasia',
         'document_company' => 'CNPJ',
         'document_company_secondary' => 'inscrição estadual',
+
+        //CONTRACTS
+        'owner' => 'proprietário',
+        'acquirer' => 'adquirente',
+        'property' => 'imóvel',
+        'start_at' => 'data de início',
+        'rent' => 'venda',
+        'sale' => 'locação',
+
+        //PROPERTY
+        "tribute" => "IPTU",
+        "condominium" => "condomínio",
+        "bedrooms" => "quartos",
+        "suites" => "suítes",
+        "bathrooms" => "banheiros",
+        "rooms" => "salas",
+        "garage" => "garagem",
+        "garage_covered" => "garagem coberta",
+        "area_total" => "área total",
+        "area_util" => "área útil",
+
 
     ],
 ];

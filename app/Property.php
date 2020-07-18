@@ -52,7 +52,8 @@ class Property extends Model
         'furnished',
         'pool',
         'steam_room',
-        'view_of_the_sea'
+        'view_of_the_sea',
+        'status'
     ];
 
 
@@ -301,7 +302,20 @@ class Property extends Model
 
 
 
+    //===================================================
+    //INSERINDO O CAMPO STATUS
+    //===================================================
+    public function setStatusAttribute($value)
+    {
+        //se receber status com valor 1, quer dizer que é true senao false
+        //no banco de dados 1 é true
+        $this->attributes['status'] = ($value == '1' ? 1 : 0);
+    }
 
+    public function getStatusAttribute($value)
+    {
+        return ($value == 1 ? true : false);
+    }
 
 
 
@@ -320,5 +334,18 @@ class Property extends Model
             return null;
         }
         return str_replace(',', '.', str_replace(['.'], '', $param));
+    }
+
+
+    //===================================================
+    //SCOPES
+    //===================================================
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', 1);
+    }
+    public function scopeUnavailable($query)
+    {
+        return $query->where('status', 0);
     }
 }

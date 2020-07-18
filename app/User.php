@@ -145,8 +145,14 @@ class User extends Authenticatable
     }
 
     //no caso de PASSWORD, temos que transformar para uma valor válido para o banco. EX: 65061450
+    //Solução: Se o input for vazio, remove a posição da atualização com o unset.
     public function setPasswordAttribute($value)
     {
+        if (empty($value)) {
+            unset($this->attributes['password']);
+            return;
+        }
+
         $this->attributes['password'] = bcrypt($value);
     }
 
@@ -182,6 +188,10 @@ class User extends Authenticatable
     }
 
 
+
+
+
+
     //===================================================
     //FUNCOES PRIVADAS
     //===================================================
@@ -214,6 +224,9 @@ class User extends Authenticatable
         }
         return str_replace(',', '.', str_replace(['.'], '', $param));
     }
+
+
+
 
     //===================================================
     //MINHAS FUNCOES DE RECEBIMENTO E TRTAMENTO/ GET
@@ -257,6 +270,17 @@ class User extends Authenticatable
         return  number_format($value, 2, ',', '.');
     }
 
+    //GET status casado ou solteiro
+    public function getCivilStatusAttribute($value)
+    {
+        if ($value == 'married') {
+            return 'casado(a)';
+        }
+        if ($value == 'single') {
+            return 'solteiro(a)';
+        }
+    }
+
     //===================================================
     //GET PARA OBTER IMAGEM NO STORAGE
     //===================================================
@@ -265,6 +289,7 @@ class User extends Authenticatable
     //     return Storage::url($this->cover);
     // }
     // COM CROPPER
+    //url_cover
     public function getUrlCoverAttribute()
     {
 
@@ -277,7 +302,9 @@ class User extends Authenticatable
     }
 
     //===================================================
-    //SCOPE PARA RETORNAR OS USUARIOS LOCATARIOS E OS LOCADORES - requisitados pelo ContractController
+    //SCOPES
+    //PARA RETORNAR OS USUARIOS LOCATARIOS E OS LOCADORES - requisitados pelo ContractController
+    //usamos essse SCOPE sem a palavra scope, chamando atraves somente do lessors ou lessees
     //===================================================
 
     public function scopeLessors($query)

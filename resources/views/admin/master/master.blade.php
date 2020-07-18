@@ -18,7 +18,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
 
-    <title>UpAdmin - Site Control</title>
+    <title>Nats - Site Control</title>
 </head>
 <body>
 
@@ -31,10 +31,21 @@
 
 <div class="ajax_response"></div>
 
+
+@php
+    if(File::exists(public_path().'/storage/'.Auth::user()->cover)){
+        $cover = Auth::user()->url_cover;
+    }else{
+        $cover = url(asset('backend/assets/images/avatar.jpg'));
+    }
+@endphp
+
+
+
 <div class="dash">
     <aside class="dash_sidebar">
         <article class="dash_sidebar_user">
-        <img class="dash_sidebar_user_thumb" src="{{url(asset('backend/assets/images/avatar.jpg'))}}" alt="" title=""/>
+        <img class="dash_sidebar_user_thumb" src="{{ $cover }}" alt="" title=""/>
 
             <h1 class="dash_sidebar_user_name">
                 <a href="">NATS Web</a>

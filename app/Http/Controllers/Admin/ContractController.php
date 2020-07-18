@@ -2,86 +2,97 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Contract;
 use App\User;
 use App\Property;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Contract as ContractRequest;
 
 class ContractController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        return view('admin.contracts.index');
+        //para enviar o usuario do relacionamento, precisamos enviar o relacionamento tmb
+        $contracts = Contract::with(['ownerObject', 'acquirerObject'])->orderBy('id', 'DESC')->get();
+        return view('admin.contracts.index', compact('contracts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
+
+
         $lessors = User::lessors();
         $lessees = User::lessees();
         return view('admin.contracts.create', compact('lessors', 'lessees'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(ContractRequest $request)
     {
-        //
+
+        //esse bloco é utiilizado para testar os campos e seus formatos, com os Metodos SET
+        // $contract = new Contract();
+        // $contract->fill($request->all());
+        // dd($contract->getAttributes());
+
+
+
+        $contractCreate = Contract::create($request->all());
+
+        return redirect()->route('admin.contracts.edit', ['contract' => $contractCreate->id])
+            ->with(['message' => 'Contrato cadastrado com sucesso!']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
-        //
+
+        $contract = Contract::where('id', $id)->first();
+
+        $lessors = User::lessors();
+        $lessees = User::lessees();
+
+
+        return view('admin.contracts.edit', compact('contract', 'lessors', 'lessees'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(ContractRequest $request, $id)
     {
-        //
+        $contract = Contract::where('id', $id)->first();
+        $contract->fill($request->all());
+        $contract->save();
+
+
+        //alterando o status do imovel se vai ta disponivel ou não
+        if ($request->property) {
+            //carregando o imovel atraves do id igual ao $request->property
+            $property = Property::where('id', $request->property)->first();
+            if ($request->status === 'active') {
+                //se tiver ativo é prq o imovel vai ta INDISPONIVEL PARA LOCACAO, no caso 0
+                $property->status = 0;
+                $property->save();
+            } else {
+                $property->status = 1;
+                $property->save();
+            }
+        }
+
+
+
+        return redirect()->route('admin.contracts.edit', ['contract' => $contract->id])
+            ->with(['message' => 'Contrato atualizado com sucesso!']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //

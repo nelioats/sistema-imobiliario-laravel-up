@@ -43,8 +43,18 @@
                                  <div class="realty_list_item_actions_stats">
                                      <img src="{{$property->cover()}}" alt="">
                                      <ul>
-                                         <li>Venda: R$ {{$property->sale_price}}</li>
-                                         <li>Aluguel: R$ {{$property->rent_price}}</li>
+                                         {{-- se  o imovel for para venda e existir o valor , vai ser apresentado o valor--}}
+                                         @if ($property->sale == true && !empty($property->sale_price))
+                                             <li>Venda: R$ {{$property->sale_price}}</li>
+                                         @endif
+
+                                           {{-- se  o imovel for para venda e existir o valor, vai ser apresentado o valor --}}
+                                        @if ($property->rent == true && !empty($property->rent_price))
+                                            <li>Aluguel: R$ {{$property->rent_price}}</li>
+                                       @endif
+
+                                        
+                                         
                                      </ul>
                                  </div>
 

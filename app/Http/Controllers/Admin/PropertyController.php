@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\User;
 use App\Property;
 use App\PropertyImage;
+use App\Support\Cropper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Admin\Property as PropertyRequest;
-use App\Support\Cropper;
 
 class PropertyController extends Controller
 {
@@ -37,6 +38,15 @@ class PropertyController extends Controller
         // $property->fill($request->all());
 
         $createProperty = Property::create($request->all());
+
+
+
+        //verificando se todos as imagens sao do tipo jpg jpeg png
+        $validator = Validator::make($request->only('files'), ['files.*' => 'image']);
+        if ($validator->fails() === true) {
+            //se for igual a true é prq foi inseido alguma arquivo que noa é imagems
+            return redirect()->back()->withInput()->with(['message-erro' => 'Todas as imagens devem ser do tipo jpg, jpeg ou png!']);
+        }
 
 
         //SALVANDO AS IMAGENS NO MODELO PropertyImage
@@ -102,6 +112,16 @@ class PropertyController extends Controller
         $property->setViewOfTheSeaAttribute($request->view_of_the_sea);
 
         $property->save();
+
+
+        //verificando se todos as imagens sao do tipo jpg jpeg png
+        $validator = Validator::make($request->only('files'), ['files.*' => 'image']);
+        if ($validator->fails() === true) {
+            //se for igual a true é prq foi inseido alguma arquivo que noa é imagems
+            return redirect()->back()->withInput()->with(['message-erro' => 'Todas as imagens devem ser do tipo jpg, jpeg ou png!']);
+        }
+
+
 
         //SALVANDO AS IMAGENS NO MODELO PropertyImage
         //$request->allFiles['files'] : [files] é o unico indice criado pelo allFiles, onde dentro dele que tem varios indices de imagens

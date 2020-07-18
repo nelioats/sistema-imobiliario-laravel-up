@@ -36,7 +36,13 @@
                        @endforeach
                 @endif
         
-
+    
+      {{-- APRESENTAÇÃO DE MENSAGENS PELO CONTROLADOR, SE APRESENTOU ALGUM ERRO NO FORMATO DAS IMAGENS--}}
+      @if (session()->exists('message-erro'))
+      <div class="message message-orange">
+          <p class="icon-asterisk">{{session()->get('message-erro')}}</p>
+      </div>  
+      @endif  
 
 
 
@@ -117,6 +123,25 @@
                               @endforeach 
                             </select>
                         </label>
+
+
+                        <div class="label_g2">
+                            <label class="label">
+                                <span class="legend">Status:</span>
+                                <select name="status" class="select2">
+                                    {{-- old('status' == '1' ? 'selected' verifica se a persistencia do formulario
+                                    : ($property->status == true ? 'selected' : '') verifica o que existe no banco de dados --}}
+                                    <option value="1" {{(old('status') == '1' ? 'selected' : '')}}>Disponível</option>
+                                    <option value="2" {{(old('status') == '0' ? 'selected' : '')}}>Indisponível</option>
+                                </select>
+                            </label>
+                        </div>
+
+
+
+
+
+
 
                         <div class="app_collapse">
                             <div class="app_collapse_header mt-2 collapse">

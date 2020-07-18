@@ -29,7 +29,7 @@ class CompanyController extends Controller
 
         return view('admin.companies.create', [
             'users' => $users,
-            //se for diferente de vazio ? devolve $user : devolve null
+            //se for diferente de vazio ? devolve o indice selected com valor:  $user ou null
             'selected' => (!empty($user) ? $user : null),
         ]);
     }
@@ -42,8 +42,8 @@ class CompanyController extends Controller
         //    dd($company);
 
         $companyCreate = Company::create($request->all());
-        dd($companyCreate);
-
+        //dd($companyCreate);
+        return redirect()->route('admin.companies.edit', ['company' => $companyCreate->id])->with(['message' => 'Empresa cadastrada com sucesso!']);
     }
 
     public function show($id)

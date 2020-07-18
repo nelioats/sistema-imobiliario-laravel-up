@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\User;
 use Session;
+use App\User;
+use App\Contract;
+use App\Property;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+
+
 
 class AuthController extends Controller
 {
@@ -37,8 +41,47 @@ class AuthController extends Controller
     //======================================================================
 
     public function home()
+
     {
-        return view('admin.dashboard');
+
+        //alimentado a dashboard
+        //chamando os scopes dos lessors e lessees
+        $lessors = User::lessors()->count();
+        $lessees = User::lessees()->count();
+
+        $team = User::where('admin', 1)->count();
+
+        //chamando os scopes 
+        $propertyAvailable = Property::available()->count();
+        $propertyUnavailable = Property::unavailable()->count();
+        $propertyTotal = Property::all()->count();
+
+        //chamando os scopes 
+        $contractsPendent = Contract::pendent()->count();
+        $contractsActivet = Contract::active()->count();
+        $contractsCanceled = Contract::canceled()->count();
+        $contractsTotal = Contract::all()->count();
+
+        //Últimos Contratos Cadastrados
+        $contracts = Contract::orderBy('id', 'DESC')->limit(10)->get();
+
+        //Últimos Imóveis Cadastrados
+        $properties = Property::orderBy('id', 'DESC')->limit(3)->get();
+
+        return view('admin.dashboard', compact(
+            'lessors',
+            'lessees',
+            'team',
+            'propertyAvailable',
+            'propertyUnavailable',
+            'propertyTotal',
+            'contractsPendent',
+            'contractsActivet',
+            'contractsCanceled',
+            'contractsTotal',
+            'contracts',
+            'properties'
+        ));
     }
 
     //======================================================================
@@ -50,12 +93,13 @@ class AuthController extends Controller
 
         //se todos campos não estiverem preenchidos
         if (($request->email == '') || ($request->password == '')) {
-            Session::flash('success', 'Ops, informe todos os dados solicitados!');
+            $request->session()->flash('error', 'Ops, informe todos os dados solicitados!');
+
             return redirect()->route('admin.login');
         }
         //se o email não for válido
         if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-            Session::flash('success', 'Ops, informe um e-mail válido!');
+            $request->session()->flash('error', 'Ops, informe um e-mail válido!');
             return redirect()->route('admin.login');
         }
 
@@ -76,7 +120,7 @@ class AuthController extends Controller
             return redirect()->route('admin.home');
         } else {
 
-            Session::flash('success', 'Ops, usuário e senha não correspondem!');
+            $request->session()->flash('error', 'Ops, usuário e senha não correspondem!');
             return redirect()->route('admin.login');
         }
     }

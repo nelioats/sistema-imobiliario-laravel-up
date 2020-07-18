@@ -50,7 +50,7 @@
                     <td>{{$company->alias_name}}</td>
                     <td>{{$company->document_company}}</td>
                     <td>{{$company->document_company_secondary}}</td>
-                    <td><a href="{{route('admin.users.edit',['user' => $company->user()->first()->id])}}" class="text-orange">{{$company->user()->first()->name}}</a></td>
+                    <td><a href="{{route('admin.users.edit',['user' => $company->owner->id])}}" class="text-orange">{{$company->owner->name}}</a></td>
                 </tr>
 
                 @endforeach

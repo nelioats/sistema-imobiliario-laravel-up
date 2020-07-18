@@ -550,3 +550,89 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
 //configirando o checkbox vendas e aluguel, em todo sistema para desativar os inputs caso seja selecionado o checkbox
 //sendo em todo sistema, sera configurado no resourses/views/admin/assets/js/scripts.js 
 //apos a atualização nm run dev
+//=============================================
+//criando as regras para modelo Contract
+//=============================================
+//criando request
+//php artisan make:request Admin\\Contract
+//no request inserir
+//check para veriricar usuarios autentcados
+//regras para os inputs
+//apos as regras, inserir bloc de mensagens de erro na view do form e criar rota no form action
+//=============================================
+//persistencia dos dados do Contract apos erro no request 
+//=============================================
+//no controlador, no metodo store, deinir nosso Request que criamos
+//no form, inserir os campos old no formulario para pesrsistir os dados
+//persisitir tmb os camapos gatilhos js
+//=============================================
+//persistencia dos dados do Contract no banco
+//=============================================
+//no metodo create
+//instanciamos um objeto do tipo contract
+//usamos o metodo fill para verificar como os campos q irao ser salvos no banco. Damos um dd na varival que recebe o fill para verificar os campos
+//os campos temos que transforma-los de acordo com os formatos dos campo definidos no banco de dados. Ex data-date, dinhiero
+//no modelo iremos criar os metodos set, para converter os campos para os formatos adequados no banco
+//apos todos os testes, criaremos o metodo create no metodo store do controlador
+//redirecionamos com redirect para videw edit enviando o id
+//=============================================
+//edição do formulário
+//=============================================
+//criar uma copia da view create e nomear para edit
+//no controlador edit, ciramos uma variavel contract que ira receber o id, enviado pelo redirect acima
+//retornamos para view edit
+//na view edit, alem dos atributos olds, iremos preencher os campos com os dados vindos do banco
+//apos persisiti todos valores dos campos no formulario
+//preparamos a rota para update enviando o id no fomrulario, definindo o metodo como PUT
+//no medtodo update do controlador, atualizamos o contrato
+//=============================================
+//listagem dos contratos - index
+//=============================================
+//criar relacionamento dentro do modelo. Relacionamento muitos(contratos) para um(usuario) para devolver o usaurio na pagina index
+//no metodo index do contrlador, criamos uma variavel com todos contratos , juntamento com o relacionamento e enviamos para view index
+//na view index, chamamos o realcionamento hasOne para listar todos contratos e seus usuarios
+//repetimos esses mesmos passos para o acquirer
+//=============================================
+//configuração do termo de contrato
+//=============================================
+// na view edit, no campo terms, apresentamos um metodo $contract->terms() que é configurado diretamente no modelo contract
+//no modelo contract, no metodo terms() configuramos toda apresentação do formulario
+
+
+
+
+//=============================================
+//adicionando a coluna status na tabela properties e contracts.
+// Vai servir para infomar qual imovel ta disponivel ou nao. (na taela um boolean)
+// Par o contrato, que pode ter varios status(pendente- ativo - cancelado - expiparado) ou seja vai ser uma string na tabela
+//=============================================
+//criamos uma migration para add o campo
+//php artisan make:migration alter_properties_table_add_status --table=properties
+//php artisan make:migration alter_contracts_table_add_status --table=contracts
+//inserir no fillable dos modelos o novo campo com seus set e get
+//na view edit e create de properties, inserimos um select para escolha do status (disponivel ou indisponivel) 
+//na view edit e create de contract, inserimos um select para escolha do status (ativo - pendente - cancelado) 
+//no contractController, no metodo UPDATE, iremos informar se o imovel(property) ta disponivel ou nao
+
+
+//===============================================================================================================
+//===============================================================================================================
+// ALIMENTADO A DASHBORAD
+//===============================================================================================================
+//===============================================================================================================
+//no controlador AuthController o metodo home, iremos evniar todas os dados atraves do modelos
+
+
+//===============================================================================================================
+//===============================================================================================================
+// CHECANDO O SISTEMA  E FAZENDO CORREÇOES
+//===============================================================================================================
+//===============================================================================================================
+//INSERINDO A IMAGEM NO PERFIL DA PAGINA MASTER
+//foi inserida o codigo php diretamente nessa pagina, pois ela sera chamada pelas outras
+
+//ACEITANDO SOMENTE IMAGENS NO CADASTRO DO USUARIO
+//dentro do request user, inserir o campo 'cover' => 'image' O proprio laravel so aceitara documento tipo imagem 
+
+//ACEITANDO SOMENTE IMAGENS NO CADASTRO DE IMOVEIS
+//antes de fazer o upload no metodo upload do controlador PropertyController, inserimos uma checagem verificando se os arquivos sao do tipo imagem
