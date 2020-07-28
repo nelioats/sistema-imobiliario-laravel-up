@@ -374,6 +374,45 @@
                                 </label>
                             </div>
                         </div>
+
+
+
+                                     {{-- INFORMAÇOES QUE SERÁ APRESENTADAS NAS VISOES WEB --}}
+
+                                     <h3 class="mt-2 mb-1">Informações do Site</h3>
+
+                                     <label class="label">
+                                        <span class="legend">Título: <a href="" target="_blank" class="text-orange icon-link" style=" margin-left: 10px; font-size: 0.875em;">Link</a></span>
+                                        <input type="text" name="title" value="{{ old('title') }}">
+                                     </label>
+                                     
+                                     <label class="label">
+                                        <span class="legend">Headline:</span>
+                                        <input type="text" name="headline" value="{{ old('headline') }}">
+                                     </label>
+                                     
+                                     <div class="label_g2">
+                                        <label class="label">
+                                           <span class="legend">Experiência</span>
+                                           <select name="experience" class="select2">
+                                              <option value="Cobertura" {{ (old('experience') == 'Cobertura' ? 'selected' : '') }}>Cobertura</option>
+                                              <option value="Alto Padrão" {{ (old('experience') == 'Alto Padrão' ? 'selected' : '') }}>Alto Padrão</option>
+                                              <option value="De Frente para o Mar" {{ (old('experience') == 'De Frente para o Mar' ? 'selected' :'') }}>De Frente para o Mar</option>
+                                              <option value="Condomínio Fechado" {{ (old('experience') == 'Condomínio Fechado' ? 'selected' : '') }}>Condomínio Fechado</option>
+                                              <option value="Compacto" {{ (old('experience') == 'Compacto' ? 'selected' :  '') }}>Compacto</option>
+                                              <option value="Lojas e Salas" {{ (old('experience') == 'Lojas e Salas' ? 'selected' :  '') }}>Lojas e Salas</option>
+                                           </select>
+                                        </label>
+                                      </div>
+
+
+
+
+
+
+
+
+
                     </div>
 
                     <div id="images" class="d-none">

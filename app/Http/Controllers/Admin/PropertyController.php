@@ -39,6 +39,8 @@ class PropertyController extends Controller
 
         $createProperty = Property::create($request->all());
 
+        $createProperty->setSlug();
+
 
 
         //verificando se todos as imagens sao do tipo jpg jpeg png
@@ -112,6 +114,8 @@ class PropertyController extends Controller
         $property->setViewOfTheSeaAttribute($request->view_of_the_sea);
 
         $property->save();
+
+        $property->setSlug();
 
 
         //verificando se todos as imagens sao do tipo jpg jpeg png

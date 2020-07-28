@@ -5,6 +5,7 @@ namespace App;
 use App\User;
 use App\PropertyImage;
 use App\Support\Cropper;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -53,7 +54,13 @@ class Property extends Model
         'pool',
         'steam_room',
         'view_of_the_sea',
-        'status'
+        'status',
+        'title',
+        'slug',
+        'headline',
+        'experience'
+
+
     ];
 
 
@@ -300,6 +307,16 @@ class Property extends Model
         $this->attributes['view_of_the_sea'] = (($value === true || $value === 'on') ? 1 : 0);
     }
 
+    ////criando url amigavel para os imoveis serem apresentados na web
+    public function setSlug()
+    {
+        if (!empty($this->title)) {
+            $this->attributes['slug'] = Str::slug($this->title) . '-' . $this->id;
+            $this->save();
+        }
+    }
+
+
 
 
     //===================================================
@@ -338,7 +355,7 @@ class Property extends Model
 
 
     //===================================================
-    //SCOPES
+    //SCOPES = retorna somente os resultados das consultas
     //===================================================
     public function scopeAvailable($query)
     {
@@ -347,5 +364,14 @@ class Property extends Model
     public function scopeUnavailable($query)
     {
         return $query->where('status', 0);
+    }
+
+    public function scopeSale($query)
+    {
+        return $query->where('sale', 1);
+    }
+    public function scopeRent($query)
+    {
+        return $query->where('rent', 1);
     }
 }

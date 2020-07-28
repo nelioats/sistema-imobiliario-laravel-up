@@ -636,3 +636,75 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
 
 //ACEITANDO SOMENTE IMAGENS NO CADASTRO DE IMOVEIS
 //antes de fazer o upload no metodo upload do controlador PropertyController, inserimos uma checagem verificando se os arquivos sao do tipo imagem
+
+
+
+//===============================================================================================================
+//===============================================================================================================
+//===============================================================================================================
+//===============================================================================================================
+// WEB - DESENVOLVENDO LAYAOUT WEB
+//===============================================================================================================
+//===============================================================================================================
+
+Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
+
+    //Pagina inicial
+    Route::get('/', 'WebController@home')->name('home');
+
+    //Pagina de contato
+    Route::get('/contato', 'WebController@contato')->name('contact');
+
+    //Pagina de Locação
+    Route::get('/quero-alugar', 'WebController@rent')->name('rent');
+
+    //Pagina de compra
+    Route::get('/quero-comprar', 'WebController@buy')->name('buy');
+
+    //
+    Route::get('/filtro', 'WebController@filter')->name('filter');
+
+    //Paginas especificas de imoveis para venda e alugar
+    Route::get('/quero-comprar/{slug}', 'WebController@buyProperty')->name('buyProperty');
+    Route::get('/quero-alugar/{slug}', 'WebController@rentProperty')->name('rentProperty');
+});
+
+//php artisan make:controller Web\\WebController
+
+//=========================================================
+//CONFIGURANDO AS INFORMAÇÕES NO ADMIN/PROPERTIES PARA SEREM APRESENTADAS NA WEB
+//=========================================================
+//sera criado uma migration adicionando campos na tabela properties
+//php artisan make:migration alter_properties_table_add_title_slug_headline_experience --table=prperties
+//nao vai funcionar o comando php artisan migrate, erro anterior
+//acrecentar os campos nas visoes edit e create de properties
+//será criado no modelo Property, um metodo setSlug, que irá criar a rul amigavel do imovel, com o srtSlug no nome e id
+//esse metodo será chamado no propertyController nos metodos edit e creat, apos o save do edit e apos o create de create
+
+//será adicionado mais dois scopes, no model Property, retornanado imoveis para venda e locaçao
+//no WebController, no metodo home, iremos receber os imoveis para venda ou locação atraves da concatenação de scopes do model Propery, 
+//na visao web.home recebemos os imoveis de venda e locacao e exibimos atraves do loop
+
+//para criar um link para cada imovel, no link das imagens para venda e locacao, definimos as rotas novas
+// Route::get('/quero-comprar/{slug}', 'WebController@buyProperty')->name('buyProperty'); no link da imagem enviamos a rota/slugs
+// Route::get('/quero-alugar/{slug}', 'WebController@buyProperty')->name('buyProperty'); no link da imagem enviamos a rota/slugs
+//criamos um metodo no webController para receber a informação do slug
+
+//=========================================================
+//CONFIGURANDO AS OS FILTROS DA PAGIAN HOME COM JS
+//=========================================================
+//inserir data-action no select da view home
+//criar novo agrupamento de rotas, pois podemos preceisar deles depois, no cado de api
+
+
+Route::group(['prefix' => 'component', 'namespace' => 'Web', 'as' => 'component.'], function () {
+
+    Route::post('main-filter/search', 'FilterController@search')->name('main-filter.search');
+});
+//criar o controlador  e seu metodos
+//voltar na view e definir a rota no data-action
+//configurar no arquivo js que irá enviar o post via ajax(sem refrsh)
+//para atualizar o arquivo scripts.js dentro de resources de forma em tempo real. npm run watch
+//dentro do js. Iremos capturar o select e enviar via ajax o valor selecionado
+//parametrizar o ajaxsetup
+//dentro do controlador passamos o Request
