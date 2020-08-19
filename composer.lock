@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b96fdf8d7e808edf17c545bf0c07e477",
+    "content-hash": "95031003bac51283eb70123a00597ab6",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -150,6 +150,55 @@
                 "upload"
             ],
             "time": "2020-04-16T14:56:01+00:00"
+        },
+        {
+            "name": "coffeecode/optimizer",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robsonvleite/optimizer.git",
+                "reference": "6379bc47072e3e5d6354d51c5731ecab860804f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robsonvleite/optimizer/zipball/6379bc47072e3e5d6354d51c5731ecab860804f3",
+                "reference": "6379bc47072e3e5d6354d51c5731ecab860804f3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CoffeeCode\\Optimizer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robson V. Leite",
+                    "email": "cursos@upinside.com.br",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Optimizer makes it easy to bookmark your site tags, open graph and twitter card",
+            "homepage": "http://www.upinside.com.br",
+            "keywords": [
+                "Coffeecode",
+                "Facebook Tags",
+                "SMO",
+                "meta tags",
+                "open graph",
+                "seo",
+                "twitter card",
+                "upinside"
+            ],
+            "time": "2020-06-23T13:19:54+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Support\Seo;
+use App\Support\Message;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
-use App\Support\Message;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
@@ -17,9 +18,13 @@ class Controller extends BaseController
     // Estamos inserido esses codigos para servir como fabrica de mensagens de requisiços
     protected $message;
 
-    public function __construct(){
+    //usado para instanciar a class seo
+    protected $seo;
+
+    public function __construct()
+    {
 
         $this->message = new Message();
+        $this->seo = new Seo();
     }
-
 }

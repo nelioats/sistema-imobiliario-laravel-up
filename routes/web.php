@@ -662,11 +662,25 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
     Route::get('/quero-comprar', 'WebController@buy')->name('buy');
 
     //
-    Route::get('/filtro', 'WebController@filter')->name('filter');
+    Route::match(['post', 'get'], '/filtro', 'WebController@filter')->name('filter');
 
     //Paginas especificas de imoveis para venda e alugar
     Route::get('/quero-comprar/{slug}', 'WebController@buyProperty')->name('buyProperty');
     Route::get('/quero-alugar/{slug}', 'WebController@rentProperty')->name('rentProperty');
+
+    //Pagina experiencias
+    Route::get('/experiencias', 'WebController@experience')->name('experience');
+
+    //Paginas especificas de experiencias
+    Route::get('/experiencias/{slug}', 'WebController@experienceCategory')->name('experienceCategory');
+
+    //pagina destaque
+    Route::get('/destaque', 'WebController@spotlight')->name('spotlight');
+
+    //enviando email
+    Route::post('/contato/sendEmail', 'WebController@sendEmail')->name('sendEmail');
+    //retornando view de sucesso do email
+    Route::get('/contato/sucesso', 'WebController@sendEmailSuccess')->name('sendEmailSuccess');
 });
 
 //php artisan make:controller Web\\WebController
@@ -700,6 +714,15 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 Route::group(['prefix' => 'component', 'namespace' => 'Web', 'as' => 'component.'], function () {
 
     Route::post('main-filter/search', 'FilterController@search')->name('main-filter.search');
+    Route::post('main-filter/category', 'FilterController@category')->name('main-filter.category');
+    Route::post('main-filter/type', 'FilterController@type')->name('main-filter.type');
+    Route::post('main-filter/neighborhood', 'FilterController@neighborhood')->name('main-filter.neighborhood');
+    Route::post('main-filter/bedrooms', 'FilterController@bedrooms')->name('main-filter.bedrooms');
+    Route::post('main-filter/suites', 'FilterController@suites')->name('main-filter.suites');
+    Route::post('main-filter/bathrooms', 'FilterController@bathrooms')->name('main-filter.bathrooms');
+    Route::post('main-filter/garage', 'FilterController@garage')->name('main-filter.garage');
+    Route::post('main-filter/price-base', 'FilterController@priceBase')->name('main-filter.priceBase');
+    Route::post('main-filter/price-limit', 'FilterController@priceLimit')->name('main-filter.priceLimit');
 });
 //criar o controlador  e seu metodos
 //voltar na view e definir a rota no data-action
@@ -708,3 +731,87 @@ Route::group(['prefix' => 'component', 'namespace' => 'Web', 'as' => 'component.
 //dentro do js. Iremos capturar o select e enviar via ajax o valor selecionado
 //parametrizar o ajaxsetup
 //dentro do controlador passamos o Request
+//no controlador, fazemos o filtro do valor recebido e retornamos para js.
+//no js iremos tratr o dom, atraves da exibicao dos select , atraves do data-index
+//repetir os prcessos comecando pela criacao da rota
+//no controlador, criar outro metodo para ccategory, usando os mesmos processos do search
+
+//apos concluiir todos os filtros, temos que apresentar na pagina os imoveis selecionados
+//vamos utilizar a rota filto
+//Route::get('/filtro', 'WebController@filter')->name('filter');
+//no nosso controlador FilterController, temos o metodo createQuery, que recebe todos ids dos imoveis selecionados.
+//temos que acessar esse metodo no controlador WebController, para isso vamos deixar ele como public
+//dentro do metodo filter do contrador WebController, iremos instanciar o FilterController
+//nossa rota tava como get, estava aparecendo todos nossos valores na barra de endereço
+//colocamos o forms da pagina home como post
+//nossa rota //Route::get('/filtro', 'WebController@filter')->name('filter'); poderiamos colocar como post, mas como ela pode ser acessada tmb pelo endereço ou seja get e post
+//colocamos a rota como match
+// Route::match(['post', 'get'], '/filtro', 'WebController@filter')->name('filter');
+
+//dentro da view filter.blade vamos utilizar os mesmos data-action e name da view home.blade para filtrar os imoveis 
+
+//=========================================================
+//MENU ALUGAR E COMPRAR
+//=========================================================
+//listando os imoveis
+//no controlador webController no metodo rent, iremos usar os scopes available e rent
+//para listar todos imoveis, clicando nos menus alugar ou comprar, temos que limpar todas as sessions para nao gerar conflito
+//no filterController iremos criar o metodo clearAllData , para limpar as sessions
+//no webcontroller dentro de rent, iremos chamar o metodo clearAllData
+
+//=========================================================
+//CRIANDO ROTA PARA AS EXPERIENCIAS DA PAGINA HOME
+//=========================================================
+//criar uma rota Route::get('/experiencias', 'WebController@experience')->name('experience');
+//no controlador webController no metodo experience retornamos com todo imvoes
+
+//para retornar somente a experiencia selecionada, criamos uma rota pegando o nome da experiecnia
+//Route::get('/experiencias/{slug}', 'WebController@experienceCategory')->name('experienceCategory');
+// na view home, no link da experiencia, iremos chamar a rota passando o atributo da experiencia
+//no contralador  webController no metodo experienceCategory, recebemos o atributo da rota atraves do Request
+
+//==========================================================
+//SEO/SEM Compartilhando informação certa
+//==========================================================
+//o seo é utilizando o coffecode optimizer dispo ivel pelo robosn
+//inserimos a arquivo SEO em app/support
+//inserios as tags de informações no .env
+//baixar a package atraves do composer, composer require coffeecode/optimizer  |link  https://packagist.org/packages/coffeecode/optimizer
+//inserir a tag {!! $head ?? '' !!} em todos topos de paginas
+//inserimos o comado head dentro da fucntion home de WebController
+//para reconhecer a comando seo dentro do webcontroller, entramos na class controller e adicionamos uma instancia da class seo
+
+//conversar com corretor WHATSAPP
+//so inserir no link esses paramentros como o contato : https://api.whatsapp.com/send?phone=DDI+DDD+TELEFONE&text=Olá, preciso de ajuda com o login."
+
+//botao facebook
+//https://developers.facebook.com/docs/plugins/share-button?locale=pt_BR
+//inisrir codigo javascript
+//insirir no html subustituindo pela url local
+//{{ url()->current() }} pegar url atual
+
+//botao twitter
+//https://publish.twitter.com/#
+
+
+
+//==========================================================
+//ENVIANDO EMAIL
+//==========================================================
+//inserir os as configuraçoes necessarias no arquvio .env
+// MAIL_DRIVER=smtp
+// MAIL_HOST=smtp.sendgrid.net
+// MAIL_PORT=465
+// MAIL_USERNAME=apikey
+// MAIL_PASSWORD=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
+// MAIL_ENCRYPTION=ssl
+//criar um arquivo do tipo Mail Mail\Web\Contact.php, atraves do comando
+//php artisan make:mail Web\\Contact 
+//no fomrulario de envio de email dentro de property.blade.php, deixamos ele como POST
+//criar uma rota post, para metodo sendEmail
+//no metodo sendEmail, vamos receber os dados recebidos pelo form atraves do request
+//instanciar a classe Mail\Web\Contact.php e enviar atraves dela o array com os dados recebidos
+//no arquivo Mail\Web\Contact.php, inserimos o array $data o contrutor, crio um atributo na classe e coloco ele p receber o valor do construtor
+//no arquivo Mail\Web\Contact.php, no metodo build(), iremos costruir o formato do email
+//o comando markdown é feito atraves uma view emails/contact.blade.php
+//por fim iremos criar a rota de return para mensagem de sucesso ou nao

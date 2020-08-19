@@ -64,7 +64,49 @@
 
                     <div class="main_property_price pt-4 text-muted">
                     <p class="main_property_price_small">IPTU: R$ {{$property->tribute}} | {{$property->condominium != '0,00' ? 'Condomínio: R$ '.$property->condominium :''}}</p>
-                        <p class="main_property_price_big">Valor do Aluguel: R$ {{$property->rent_price}}/mês</p>
+                        
+
+
+
+                          {{-- caso o usuarios selecionou o menu Comprar  --}}
+
+                      @if(!@empty($type) && $type == 'sale')
+                           <p class="main_property_price_big">Valor do Imóvel: R$ {{$property->sale_price}}</p>
+
+                      {{-- caso o usuarios selecionou o menu Alugar  --}}
+                      @elseif(!@empty($type) && $type == 'rent')
+                            <p class="main_property_price_big">Valor do Aluguel: R$ {{$property->rent_price}}/mês</p>
+
+                      {{-- caso o usuarios tenha selecionado em experiencias  --}}
+                      @else
+
+                      {{-- para o imovel que tem vlor tanto para venda como para locação  --}}
+                          @if ($property->sale == true && !empty($property->sale_price) && $property->rent == true && !empty($property->rent_price))
+                              <p class="main_property_price_big">Valor do Imóvel: R$ {{$property->sale_price}}</p> <br> ou Valor do Aluguel: R$ {{$property->rent_price}}/mês</p>
+
+                          {{-- para o imovel que tem somente vlor para venda  --}}
+                          @elseif($property->sale == true && !empty($property->sale_price))
+                                <p class="main_property_price_big">Valor do Imóvel: R$ {{$property->sale_price}}</p>
+
+                          {{-- para o imovel que tem somente vlor para locaçao  --}}
+                          @elseif($property->rent == true && !empty($property->rent_price))
+                                <p class="main_property_price_big">Valor do Aluguel: R$ {{$property->rent_price}}/mês</p>
+
+                          {{-- ultimo opcao, que jamais será encontrada, mas é bom prevenir  --}}
+                          @else
+                              <p class="main_properties_price text-front">Entre em contato com a nossa equipe comercial!</p>
+                          @endif
+
+                      @endif
+
+
+
+
+
+
+
+
+
                     </div>
 
                     <div class="main_property_content_description">
@@ -190,29 +232,30 @@
                 </div>
 
                 <div class="col-12 col-lg-4">
-                    <button class="btn btn-outline-success btn-lg btn-block icon-whatsapp mb-3">Converse com o Corretor!
-                    </button>
+                    <a  href="https://api.whatsapp.com/send?phone=55+98+992078163&text=Olá, preciso de ajuda com o login." class="btn btn-outline-success btn-lg btn-block icon-whatsapp mb-3">Converse com o Corretor!
+                    </a>
 
                     <div class="main_property_contact">
                         <h2 class="bg-front text-white">Entre em contato</h2>
 
-                        <form action="">
+                    <form action="{{route('web.sendEmail')}}" method="POST" autocomplete="off">
+                            @csrf
                             <div class="form-group">
                                 <label for="name">Seu nome:</label>
                                 <input type="text" id="name" class="form-control"
-                                       placeholder="Informe seu nome completo">
+                                       placeholder="Informe seu nome completo" name="name">
                             </div>
 
                             <div class="form-group">
                                 <label for="telephone">Seu telefone:</label>
                                 <input type="tel" id="telephone" class="form-control"
-                                       placeholder="Informe seu telefone com DDD">
+                                       placeholder="Informe seu telefone com DDD" name="cell">
                             </div>
 
                             <div class="form-group">
                                 <label for="email">Seu e-mail:</label>
                                 <input type="email" id="email" class="form-control"
-                                       placeholder="Informe seu melhor e-mail">
+                                       placeholder="Informe seu melhor e-mail" name="email">
                             </div>
 
                             <div class="form-group">
@@ -222,16 +265,16 @@
 
                             <div class="form-group">
                                 <button class="btn btn-block btn-front">Enviar</button>
-                                <p class="text-center text-front mb-0 mt-4 font-weight-bold">(48) 3322-1234</p>
+                                <p class="text-center text-front mb-0 mt-4 font-weight-bold">(98) 992078163</p>
                             </div>
                         </form>
                     </div>
 
-                    <div class="main_property_share py-3 text-right">
-                        <span class="text-front mr-2">Compartilhe:</span>
-                        <button class="btn btn-front icon-facebook icon-notext"></button>
-                        <button class="btn btn-front icon-twitter icon-notext"></button>
-                        <button class="btn btn-front icon-instagram icon-notext"></button>
+                    <div class="main_property_share py-3 text-right d-flex justify-content-center">
+                        
+                        <div class="fb-share-button mr-2" data-href="{{ url()->current() }}" data-layout="button_count" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Compartilhar</a></div>
+                        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="{{$property->title}}" data-url="{{ url()->current() }}" data-hashtags="nats" data-related="nelioats" data-lang="pt" data-show-count="false">Tweet</a>
+                        <a style="padding: 0 10px; margin: 0; font-size: 0.875em; padding-top: 2px;" href="https://www.instagram.com/?hl=pt-br" target="blank" class="btn btn-front icon-instagram icon-notext ml-2">Instagram</a>
                     </div>
                 </div>
             </div>
@@ -247,13 +290,26 @@
 @endsection
 
 @section('js')
+
+
 <script>
 
 
+$(document).ready(function(){
+    delete $.ajaxSettings.headers["X-CSRF-TOKEN"];
+});
 
+
+
+
+
+//inserindo maps com api google maps. Devido o @crsf token do laravel, criar conflito com o script do google, temos que remover o srsf token no arquivo scrits.js 
 
 
     function markMap() {
+
+        console.log('teste');
+
 
         var locationJson = $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address={{$property->street}},+{{$property->number}}+{{$property->city}}+{{$property->neighborhood}}&key=AIzaSyDIc5H1bReCkBvi__bUhIIHf57sbt2xcxY', function(response){
       
@@ -302,5 +358,9 @@
 
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIc5H1bReCkBvi__bUhIIHf57sbt2xcxY&callback=markMap"></script>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v8.0" nonce="a0s30lt6"></script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 @endsection
 

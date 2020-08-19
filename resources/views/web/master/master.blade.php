@@ -6,7 +6,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Imobiliária</title>
+
+    {{-- usado para seo com auxilio do SEO ROBSON --}}
+    {!! $head ?? '' !!}
 
     <link rel="stylesheet" href="{{url(asset('frontend/assets/css/bootstrap.css'))}}">
     <link rel="stylesheet" href="{{url(asset('frontend/assets/libs/libs.css'))}}">
@@ -51,7 +53,7 @@
         <div class="container">
 
             <div class="navbar-brand">
-                <a href="index.php">
+                <a href="{{route('web.home')}}">
                     <h1 class="text-hide">Imobiliária</h1>
                     <img src="{{url(asset('frontend/assets/images/logo.png'))}}" width="280" alt="Imobiliária" class="d-inline-block">
                 </a>
@@ -65,7 +67,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbar">
                 <ul class="navbar-nav">
                     <li class="nav-item"><a href="{{route('web.home')}}" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="javascript:void(0)" class="nav-link text-front">Destaque</a></li>
+                    <li class="nav-item"><a href="{{route('web.spotlight')}}" class="nav-link text-front">Destaque</a></li>
                     <li class="nav-item"><a href="{{route('web.rent')}}" class="nav-link">Alugar</a></li>
                     <li class="nav-item"><a href="{{route('web.buy')}}" class="nav-link">Comprar</a></li>
                     <li class="nav-item"><a href="{{route('web.contact')}}" class="nav-link">Contato</a></li>
@@ -96,7 +98,7 @@
 </article>
 
 <section class="main_footer bg-light"
-         style="background: url(frontend/assets/images/footer.png) repeat-x bottom center; background-size: 10%;">
+         style="background: url({{asset('frontend/assets/images/footer.png')}}) repeat-x bottom center; background-size: 10%;">
     <div class="container pt-5" style="padding-bottom: 120px;">
 
         <div class="row d-flex justify-content-around text-muted">

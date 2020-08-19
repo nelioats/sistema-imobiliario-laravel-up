@@ -13,109 +13,79 @@
             </div>
 
             <div class="col-12 col-md-4">
-                <form action="" class="w-100 p-3 bg-white mb-5">
+            <form action="{{route('web.filter')}}" method="POST" class="w-100 p-3 bg-white mb-5">
+                @csrf
                     <div class="row">
                         <div class="form-group col-12">
                             <label for="search" class="mb-2 text-front">Comprar ou Alugar?</label>
-                            <select class="selectpicker" id="search" name="search" title="Escolha...">
-                                <option value="buy">Comprar</option>
-                                <option value="rent">Alugar</option>
+                            <select class="selectpicker" id="search" name="filter_search" title="Escolha..." data-index="1" data-action="{{route('component.main-filter.search')}}">
+                                <option value="buy" {{(session('sale') == true ? 'selected' : '')}}>Comprar</option>
+                                <option value="rent" {{(session('rent') == true ? 'selected' : '')}}>Alugar</option>
                             </select>
                         </div>
 
                         <div class="form-group col-12">
                             <label for="category" class="mb-2 text-front">O que você quer?</label>
-                            <select class="selectpicker" id="category" name="category" title="Escolha...">
-                                <option value="">Imóvel Residencial</option>
-                                <option value="">Comercial/Industrial</option>
-                                <option value="">Terreno</option>
+                            <select class="selectpicker" id="category" name="filter_category" title="Escolha..." data-index="2" data-action="{{route('component.main-filter.category')}}">
+                                <option disabled>Selecione o filtro anterior</option>
                             </select>
                         </div>
 
                         <div class="form-group col-12">
                             <label for="type" class="mb-2 text-front">Qual o tipo do imóvel?</label>
-                            <select class="selectpicker input-large" id="type" name="type" multiple
-                                    data-actions-box="true">
-                                <option value="">Casa</option>
-                                <option value="">Apartamento</option>
-                                <option value="">Terreno</option>
-                                <option value="">Sala Comercial</option>
-                                <option value="">Galpão</option>
+                            <select class="selectpicker input-large" id="type" name="filter_type" multiple title="Escolha..."
+                                    data-actions-box="true" data-index="3" data-action="{{route('component.main-filter.type')}}">
+                                    <option disabled>Selecione o filtro anterior</option>
                             </select>
                         </div>
 
                         <div class="form-group col-12">
                             <label for="search_locale" class="mb-2 text-front">Onde você quer?</label>
-                            <select class="selectpicker" name="bedrooms" id="bedrooms" title="Escolha..." multiple
-                                    data-actions-box="true">
-                                <option value="">Campeche</option>
-                                <option value="">Rio Tavares</option>
-                                <option value="">Morro das Pedras</option>
-                                <option value="">Pântano do Sul</option>
-                                <option value="">Matadeiro</option>
-                                <option value="">Armação</option>
+                            <select class="selectpicker" name="filter_neighborhood" id="bedrooms" title="Escolha..." multiple
+                                    data-actions-box="true" data-index="4" data-action="{{route('component.main-filter.neighborhood')}}">
+                                    <option disabled>Selecione o filtro anterior</option>
                             </select>
                         </div>
 
                         <div class="form-group col-12">
                             <label for="bedrooms" class="mb-2 text-front">Quartos</label>
-                            <select class="selectpicker" name="bedrooms" id="bedrooms" title="Escolha...">
-                                <option value="">1</option>
-                                <option value="">2</option>
-                                <option value="">3</option>
-                                <option value="">4+</option>
+                            <select class="selectpicker" name="filter_bedrooms" id="bedrooms" title="Escolha..." data-index="5" data-action="{{route('component.main-filter.bedrooms')}}">
+                                <option disabled>Selecione o filtro anterior</option>
                             </select>
                         </div>
 
                         <div class="form-group col-12">
                             <label for="bedrooms" class="mb-2 text-front">Suítes</label>
-                            <select class="selectpicker" name="bedrooms" id="bedrooms" title="Escolha...">
-                                <option value="">0</option>
-                                <option value="">1</option>
-                                <option value="">2</option>
-                                <option value="">3</option>
-                                <option value="">4+</option>
+                            <select class="selectpicker" name="filter_suites" id="bedrooms" title="Escolha..." data-index="6" data-action="{{route('component.main-filter.suites')}}">
+                                <option disabled>Selecione o filtro anterior</option>
                             </select>
                         </div>
 
                         <div class="form-group col-12">
                             <label for="bedrooms" class="mb-2 text-front">Banheiros</label>
-                            <select class="selectpicker" name="bedrooms" id="bedrooms" title="Escolha...">
-                                <option value="">1</option>
-                                <option value="">2</option>
-                                <option value="">3</option>
-                                <option value="">4+</option>
+                            <select class="selectpicker" name="filter_bathrooms" id="bedrooms" title="Escolha..." data-index="7"  data-action="{{route('component.main-filter.bathrooms')}}">
+                                <option disabled>Selecione o filtro anterior</option>
                             </select>
                         </div>
 
                         <div class="form-group col-12">
                             <label for="bedrooms" class="mb-2 text-front">Garagem</label>
-                            <select class="selectpicker" name="bedrooms" id="bedrooms" title="Escolha...">
-                                <option value="">0</option>
-                                <option value="">1</option>
-                                <option value="">2</option>
-                                <option value="">3</option>
-                                <option value="">4+</option>
+                            <select class="selectpicker" name="filter_garage" id="bedrooms" title="Escolha..." data-index="8" data-action="{{route('component.main-filter.garage')}}">
+                                <option disabled>Selecione o filtro anterior</option>
                             </select>
                         </div>
 
                         <div class="form-group col-12">
                             <label for="bedrooms" class="mb-2 text-front">Preço Base</label>
-                            <select class="selectpicker" name="bedrooms" id="bedrooms" title="Escolha...">
-                                <option value="">A partir de R$ 100.000,00</option>
-                                <option value="">2</option>
-                                <option value="">3</option>
-                                <option value="">4+</option>
+                            <select class="selectpicker" name="filter_base" id="bedrooms" title="Escolha..." data-index="9" data-action="{{route('component.main-filter.priceBase')}}">
+                                <option disabled>Selecione o filtro anterior</option>
                             </select>
                         </div>
 
                         <div class="form-group col-12">
                             <label for="bedrooms" class="mb-2 text-front">Preço Limite</label>
-                            <select class="selectpicker" name="bedrooms" id="bedrooms" title="Escolha...">
-                                <option value="">Até R$ 1.000.000,00</option>
-                                <option value="">2</option>
-                                <option value="">3</option>
-                                <option value="">4+</option>
+                            <select class="selectpicker" name="filter_limit" id="bedrooms" title="Escolha..." data-index="10" data-action="{{route('component.main-filter.priceLimit')}}">
+                                <option disabled>Selecione o filtro anterior</option>
                             </select>
                         </div>
 
@@ -130,157 +100,88 @@
 
                 <section class="row main_properties">
 
-                    <div class="col-12 col-md-12 col-lg-6 mb-4">
-                        <article class="card main_properties_item">
-                            <div class="img-responsive-16by9">
-                                <a href="">
-                                    <img src="properties/1/5a3571ab-4d76-466f-8246-eff8cb98cedd.jpg"
-                                         class="card-img-top"
-                                         alt="">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h2><a href="" class="text-front">Linda Casa no Campeche com vista para o Morro do
-                                        Lampião</a>
-                                </h2>
-                                <p class="main_properties_item_category">Imóvel Residencial</p>
-                                <p class="main_properties_item_type">Casa - Campeche <i
-                                            class="icon-location-arrow icon-notext"></i></p>
-                                <p class="main_properties_price text-front">R$ 1.500,00/mês</p>
-                                <a href="" class="btn btn-front btn-block">Ver Imóvel</a>
-                            </div>
-                            <div class="card-footer d-flex">
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/bed.png" class="img-fluid" alt="">
-                                    <p class="text-muted">4</p>
-                                </div>
+               
+            @if ($properties->count())
+                @foreach ($properties as $property)
+                
+                <div class="col-12 col-md-12 col-lg-6 mb-4">
+                    <article class="card main_properties_item">
+                        <div class="img-responsive-16by9">
+                            <a href="{{route((session('sale') == true || (!empty($type) && $type == 'sale') || ($property->rent == false) ? 'web.buyProperty' : 'web.rentProperty'),['slug'=>$property->slug])}}">
+                                <img src="{{$property->cover()}}" class="card-img-top"
+                                     alt="">
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h2><a href="{{route((session('sale') == true || (!empty($type) && $type == 'sale') || ($property->rent == false) ?  'web.buyProperty' : 'web.rentProperty'),['slug'=>$property->slug])}}" class="text-front">{{$property->title}}</a>
+                            </h2>
+                            <p class="main_properties_item_category">{{$property->category}}</p>
+                            <p class="main_properties_item_type">{{$property->type}} - {{$property->neighborhood}}<i
+                                        class="icon-location-arrow icon-notext"></i></p>
 
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/garage.png" class="img-fluid" alt="">
-                                    <p class="text-muted">2</p>
-                                </div>
+                            {{-- caso o usuarios selecionou o menu Comprar  --}}
 
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/util-area.png" class="img-fluid" alt="">
-                                    <p class="text-muted">1500 m&sup2;</p>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
+                            @if(!@empty($type) && $type == 'sale')
+                                <p class="main_properties_price text-front">R$ {{ $property->sale_price}}</p>
 
-                    <div class="col-12 col-md-12 col-lg-6 mb-4">
-                        <article class="card main_properties_item">
-                            <div class="img-responsive-16by9">
-                                <a href="">
-                                    <img src="properties/1/5a3571ab-4d76-466f-8246-eff8cb98cedd.jpg"
-                                         class="card-img-top"
-                                         alt="">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h2><a href="" class="text-front">Linda Casa no Campeche com vista para o Morro do
-                                        Lampião</a>
-                                </h2>
-                                <p class="main_properties_item_category">Imóvel Residencial</p>
-                                <p class="main_properties_item_type">Casa - Campeche <i
-                                            class="icon-location-arrow icon-notext"></i></p>
-                                <p class="main_properties_price text-front">R$ 1.500,00/mês</p>
-                                <a href="" class="btn btn-front btn-block">Ver Imóvel</a>
-                            </div>
-                            <div class="card-footer d-flex">
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/bed.png" class="img-fluid" alt="">
-                                    <p class="text-muted">4</p>
-                                </div>
+                            {{-- caso o usuarios selecionou o menu Alugar  --}}
+                            @elseif(!@empty($type) && $type == 'rent')
 
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/garage.png" class="img-fluid" alt="">
-                                    <p class="text-muted">2</p>
-                                </div>
+                                <p class="main_properties_price text-front">R$ {{ $property->rent_price}}/mês</p>
 
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/util-area.png" class="img-fluid" alt="">
-                                    <p class="text-muted">1500 m&sup2;</p>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
+                            {{-- caso o usuarios tenha selecionado em experiencias  --}}
+                            @else
 
-                    <div class="col-12 col-md-12 col-lg-6 mb-4">
-                        <article class="card main_properties_item">
-                            <div class="img-responsive-16by9">
-                                <a href="">
-                                    <img src="properties/1/5a3571ab-4d76-466f-8246-eff8cb98cedd.jpg"
-                                         class="card-img-top"
-                                         alt="">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h2><a href="" class="text-front">Linda Casa no Campeche com vista para o Morro do
-                                        Lampião</a>
-                                </h2>
-                                <p class="main_properties_item_category">Imóvel Residencial</p>
-                                <p class="main_properties_item_type">Casa - Campeche <i
-                                            class="icon-location-arrow icon-notext"></i></p>
-                                <p class="main_properties_price text-front">R$ 1.500,00/mês</p>
-                                <a href="" class="btn btn-front btn-block">Ver Imóvel</a>
-                            </div>
-                            <div class="card-footer d-flex">
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/bed.png" class="img-fluid" alt="">
-                                    <p class="text-muted">4</p>
-                                </div>
+                            {{-- para o imovel que tem vlor tanto para venda como para locação  --}}
+                                @if ($property->sale == true && !empty($property->sale_price) && $property->rent == true && !empty($property->rent_price))
+                                    <p class="main_properties_price text-front">R$ {{ $property->sale_price}} <br> ou {{ $property->rent_price}}/mês</p>
 
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/garage.png" class="img-fluid" alt="">
-                                    <p class="text-muted">2</p>
-                                </div>
+                                {{-- para o imovel que tem somente vlor para venda  --}}
+                                @elseif($property->sale == true && !empty($property->sale_price))
+                                    <p class="main_properties_price text-front">R$ {{ $property->sale_price}}</p>
 
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/util-area.png" class="img-fluid" alt="">
-                                    <p class="text-muted">1500 m&sup2;</p>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
+                                {{-- para o imovel que tem somente vlor para locaçao  --}}
+                                @elseif($property->rent == true && !empty($property->rent_price))
+                                    <p class="main_properties_price text-front">R$ {{ $property->rent_price}}/mês</p>
 
-                    <div class="col-12 col-md-12 col-lg-6 mb-4">
-                        <article class="card main_properties_item">
-                            <div class="img-responsive-16by9">
-                                <a href="">
-                                    <img src="properties/1/5a3571ab-4d76-466f-8246-eff8cb98cedd.jpg"
-                                         class="card-img-top"
-                                         alt="">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h2><a href="" class="text-front">Linda Casa no Campeche com vista para o Morro do
-                                        Lampião</a>
-                                </h2>
-                                <p class="main_properties_item_category">Imóvel Residencial</p>
-                                <p class="main_properties_item_type">Casa - Campeche <i
-                                            class="icon-location-arrow icon-notext"></i></p>
-                                <p class="main_properties_price text-front">R$ 1.500,00/mês</p>
-                                <a href="" class="btn btn-front btn-block">Ver Imóvel</a>
-                            </div>
-                            <div class="card-footer d-flex">
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/bed.png" class="img-fluid" alt="">
-                                    <p class="text-muted">4</p>
-                                </div>
+                                {{-- ultimo opcao, que jamais será encontrada, mas é bom prevenir  --}}
+                                @else
+                                    <p class="main_properties_price text-front">Entre em contato com a nossa equipe comercial!</p>
+                                @endif
 
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/garage.png" class="img-fluid" alt="">
-                                    <p class="text-muted">2</p>
-                                </div>
+                            @endif
 
-                                <div class="main_properties_features col-4 text-center">
-                                    <img src="assets/images/icons/util-area.png" class="img-fluid" alt="">
-                                    <p class="text-muted">1500 m&sup2;</p>
-                                </div>
+                            
+                            <a href="{{route((session('sale') == true || (!empty($type) && $type == 'sale') || ($property->rent == false) ?  'web.buyProperty' : 'web.rentProperty'),['slug'=>$property->slug])}}" class="btn btn-front btn-block">Ver Imóvel</a>
+                        </div>
+                        <div class="card-footer d-flex">
+                            <div class="main_properties_features col-4 text-center">
+                                <img src="{{asset('frontend/assets/images/icons/bed.png')}}" class="img-fluid" alt="">
+                                <p class="text-muted">{{$property->bedrooms}}</p>
                             </div>
-                        </article>
-                    </div>
+    
+                            <div class="main_properties_features col-4 text-center">
+                                <img src="{{asset('frontend/assets/images/icons/garage.png')}}" class="img-fluid" alt="">
+                                <p class="text-muted">{{$property->garage + $property->garage_covered}}</p>
+                            </div>
+    
+                            <div class="main_properties_features col-4 text-center">
+                                <img src="{{asset('frontend/assets/images/icons/util-area.png')}}" class="img-fluid" alt="">
+                                <p class="text-muted">{{$property->area_util}} m&sup2;</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+    
+                @endforeach 
+            @else
+
+            <div class="col-12 p-5 bg-white">
+                <h2 class="text-front icon-info text-center">Ops, não encontramos nenhum imóvel para você comprar ou alugar!</h2>
+                <p class="text-center">Utilize o filtro avançado para encontrar o lar de seus sonhos...</p>
+            </div>
+
+            @endif
 
                 </section>
             </div>
