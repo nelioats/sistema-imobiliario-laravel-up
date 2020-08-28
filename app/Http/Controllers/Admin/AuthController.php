@@ -27,7 +27,8 @@ class AuthController extends Controller
         // $user = User::where('id',2);
         //  $user->update([
         //     'email' => 'nelioats@gmail.com',
-        //     'password' => password_hash(12345, PASSWORD_DEFAULT)]);
+        //     'password' => password_hash(12345, PASSWORD_DEFAULT)
+        //]);
 
         //    // verificando se ja existe uma sessao criada
         if (Auth::check() === true) {
@@ -105,13 +106,23 @@ class AuthController extends Controller
 
 
 
-
-
-
         //verifica se as credencias são as mesmas do banco.
         $credentials = $request->only('email', 'password');
 
+
+
+
+
+
         if (Auth::attempt($credentials)) {
+
+            //verificando se é um usuario admin, se nao for, retorna para login
+            if (!$this->isAdmin()) {
+                Auth::logout();
+                $request->session()->flash('error', 'Ops, usuário não tem permissão para acessar o painel de controle!');
+                return redirect()->route('admin.login');
+            }
+
 
 
             //salvar o utlimo acesso e o ip do usuario
@@ -146,5 +157,20 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('admin.login');
+    }
+
+    //======================================================================
+    //VERIFICANDO SE O USUARIO É UM ADMIN
+    //======================================================================  
+    public function isAdmin()
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+
+        if ($user->admin === 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

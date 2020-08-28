@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt', //trocamos para proteger a api
             'provider' => 'users',
             'hash' => false,
         ],

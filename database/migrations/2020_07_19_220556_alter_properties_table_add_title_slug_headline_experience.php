@@ -13,8 +13,8 @@ class AlterPropertiesTableAddTitleSlugHeadlineExperience extends Migration
      */
     public function up()
     {
-        Schema::table('prperties', function (Blueprint $table) {
-            $table->string('title')->nullable();
+        Schema::table('properties', function (Blueprint $table) {
+            $table->string('title');
             $table->string('slug')->nullable();
             $table->string('headline')->nullable();
             $table->string('experience')->nullable();

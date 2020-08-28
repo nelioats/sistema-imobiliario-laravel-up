@@ -389,7 +389,11 @@ input:-webkit-autofill {
 .app_form .label_permissions .label_permissions_items .label {
   flex-basis: 100% !important;
 }
-.app_form input, .app_form input[type=date], .app_form select, .app_form textarea, .app_form .select2 {
+.app_form input,
+.app_form input[type=date],
+.app_form select,
+.app_form textarea,
+.app_form .select2 {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -404,7 +408,11 @@ input:-webkit-autofill {
   resize: none;
   outline: none;
 }
-.app_form input:disabled, .app_form input[type=date]:disabled, .app_form select:disabled, .app_form textarea:disabled, .app_form .select2:disabled {
+.app_form input:disabled,
+.app_form input[type=date]:disabled,
+.app_form select:disabled,
+.app_form textarea:disabled,
+.app_form .select2:disabled {
   cursor: not-allowed;
   background-color: #F3F3F3;
 }
@@ -463,6 +471,35 @@ input:-webkit-autofill {
   filter: alpha(opacity=100);
   opacity: 1;
 }
+.app_form input[type=radio] {
+  visibility: hidden !important;
+  margin: 0 !important;
+  width: 0 !important;
+  display: inline-block;
+}
+.app_form input[type=radio] + label:before, .app_form input[type=radio] + span:before {
+  visibility: visible;
+  font-family: "upadmin" !important;
+  position: relative;
+  top: 4px;
+  padding-right: 8px;
+  content: "\E022" !important;
+  font-size: 1.1em;
+}
+.app_form input[type=radio] + label:hover, .app_form input[type=radio] + span:hover {
+  cursor: pointer;
+}
+.app_form input[type=radio] + label:hover:before, .app_form input[type=radio] + span:before {
+  content: "\E022";
+  opacity: 0.2;
+}
+.app_form input[type=radio]:checked + label:before, .app_form input[type=radio]:checked + span:before {
+  content: "\E021" !important;
+}
+.app_form input[type=radio]:checked + label:hover:before, .app_form input[type=radio]:checked + span:hover:before, .app_form input[type=radio]:checked + label:before, .app_form input[type=radio]:checked + span:before {
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
 
 /*SEARCH FORM*/
 .app_search_form {
@@ -481,7 +518,7 @@ input:-webkit-autofill {
   padding: 5px 10px;
   border: none;
   border-left: 0;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
   border-radius: 0 4px 4px 0;
   transition-duration: 0.2s;
@@ -1068,7 +1105,7 @@ input:-webkit-autofill {
 .realty_list .realty_list_item .realty_list_item_actions_stats {
   flex-basis: 380px;
   width: 380px;
-  height: 220px;
+  height: 214px;
   position: relative;
   overflow: hidden;
 }
@@ -1092,7 +1129,7 @@ input:-webkit-autofill {
 }
 .realty_list .realty_list_item .realty_list_item_content {
   flex-basis: calc(100% - 380px);
-  padding: 10px 20px;
+  padding: 9px 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -1131,7 +1168,8 @@ input:-webkit-autofill {
   color: #555555;
   padding: 10px;
 }
-.realty_list .realty_list_item .realty_list_item_content .realty_list_item_card .realty_list_item_card_content .realty_list_item_description_title, .realty_list .realty_list_item .realty_list_item_content .realty_list_item_card .realty_list_item_card_content .realty_list_item_description_content {
+.realty_list .realty_list_item .realty_list_item_content .realty_list_item_card .realty_list_item_card_content .realty_list_item_description_title,
+.realty_list .realty_list_item .realty_list_item_content .realty_list_item_card .realty_list_item_card_content .realty_list_item_description_content {
   flex-basis: 100%;
 }
 .realty_list .realty_list_item .realty_list_item_content .realty_list_item_card .realty_list_item_card_content .realty_list_item_description_content span {
@@ -1163,27 +1201,32 @@ input:-webkit-autofill {
   margin-bottom: 10px;
 }
 
-.property_image, .content_image {
+.property_image,
+.content_image {
   width: 100%;
   flex-basis: 100%;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
 }
-.property_image .property_image_item, .content_image .property_image_item {
+.property_image .property_image_item,
+.content_image .property_image_item {
   flex-basis: calc(25% - 15px) !important;
   margin-bottom: 20px;
   margin-right: 20px;
   border-radius: 4px;
   position: relative;
 }
-.property_image .property_image_item:nth-child(4n), .content_image .property_image_item:nth-child(4n) {
+.property_image .property_image_item:nth-child(4n),
+.content_image .property_image_item:nth-child(4n) {
   margin-right: 0px !important;
 }
-.property_image .property_image_item img, .content_image .property_image_item img {
+.property_image .property_image_item img,
+.content_image .property_image_item img {
   border-radius: 4px;
 }
-.property_image .property_image_item .property_image_actions, .content_image .property_image_item .property_image_actions {
+.property_image .property_image_item .property_image_actions,
+.content_image .property_image_item .property_image_actions {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -1201,7 +1244,8 @@ input:-webkit-autofill {
   .realty_list_item .realty_list_item_content {
     flex-basis: 100% !important;
   }
-  .realty_list_item .realty_list_item_actions ul, .realty_list_item .realty_list_item_actions div {
+  .realty_list_item .realty_list_item_actions ul,
+.realty_list_item .realty_list_item_actions div {
     flex-basis: 100%;
   }
 }

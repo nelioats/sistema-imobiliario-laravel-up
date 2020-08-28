@@ -64,6 +64,10 @@ class WebController extends Controller
     {
         $property = Property::where('slug', $request->slug)->first();
 
+        //incrementar a coluna views
+        //podemos usar o metodo do eloquent $property->increment('views'); ou  na logica mesmo como abaixo
+        $property->views = $property->views + 1;
+        $property->save();
 
         $head =  $this->seo->render(
             env('APP_NAME') . '- NATS imóveis',
@@ -114,6 +118,12 @@ class WebController extends Controller
     public function buyProperty(Request $request)
     {
         $property = Property::where('slug', $request->slug)->first();
+
+        //incrementar a coluna views
+        //podemos usar o metodo do eloquent $property->increment('views'); ou  na logica mesmo como abaixo
+        $property->views = $property->views + 1;
+        $property->save();
+
 
         $head =  $this->seo->render(
             env('APP_NAME') . '- NATS imóveis',

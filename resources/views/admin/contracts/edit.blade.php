@@ -85,11 +85,11 @@
                                 {{-- {{(old('sale') == 'on'? 'checked' : ($contract->sale == true ? 'checked' : ''))}}
                                 o old usamos para retorno das informacoes apos submissao do formulario, caso tenha erro,
                                 ($contract->sale == true ? 'checked' : '') usamos para carreager as informacoes vindas do banco --}}
-                                <input type="checkbox" name="sale" {{(old('sale') == 'on'? 'checked' : ($contract->sale == true ? 'checked' : ''))}}><span>Venda</span>
+                                <input type="radio" name="purpouse" value="sale" {{(old('purpouse') == 'sale'? 'checked' : ($contract->purpouse == 'sale' ? 'checked' : ''))}}><span>Venda</span>
                             </label>
 
                             <label class="label">
-                                <input type="checkbox" name="rent" {{(old('rent') == 'on'? 'checked' : ($contract->rent == true ? 'checked' : ''))}}><span>Locação</span>
+                                <input type="radio" name="purpouse" value="rent" {{(old('purpouse') == 'rent'? 'checked' : ($contract->purpouse == 'rent' ? 'checked' : ''))}}><span>Locação</span>
                             </label>
                         </div>
 
@@ -204,15 +204,15 @@
                                     <label class="label">
                                         <span class="legend">Valor de Venda:</span>
                                         <input type="tel" name="sale_price" class="mask-money"
-                                    placeholder="Valor de Venda" value="{{ ($contract->sale == true ? $contract->price : '0,00') }}"
-                                     {{ ($contract->sale != true ? 'disabled' : '') }}/>
+                                    placeholder="Valor de Venda" value="{{ ($contract->purpouse == 'sale' ? $contract->price : '0,00') }}"
+                                     {{ ($contract->purpouse != 'sale' ? 'disabled' : '') }}/>
                                     </label>
 
                                     <label class="label">
                                         <span class="legend">Valor de Locação:</span>
                                         <input type="text" name="rent_price" class="mask-money"
-                                               placeholder="Valor de Locação" value="{{ ($contract->rent == true ? $contract->price : '0,00') }}"
-                                               {{ ($contract->rent != true ? 'disabled' : '') }}/>
+                                               placeholder="Valor de Locação" value="{{ ($contract->purpouse == 'rent' ? $contract->price : '0,00') }}"
+                                               {{ ($contract->purpouse != 'rent' ? 'disabled' : '') }}/>
                                     </label>
                                 </div>
 

@@ -14,8 +14,8 @@ class CreatePropertyImagesTable extends Migration
     public function up()
     {
         Schema::create('property_images', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('property');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('property');
             $table->string('path');
             $table->boolean('cover')->nullable();
             $table->timestamps();

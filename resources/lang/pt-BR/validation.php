@@ -197,6 +197,7 @@ return [
         'date_of_birth' => 'data de nascimento',
         'place_of_birth' => 'naturalidade',
         'civil_status' => 'estado civil',
+        'cover' => 'foto',
         //RENDA
         'occupation' => 'profissão',
         'income' => 'renda',
@@ -212,6 +213,7 @@ return [
         //CONTATO
         'telephone' => 'telefone',
         'cell' => 'celular',
+        'price' => 'valor',
 
         //Acesso
         'email' => 'e-mail',
@@ -242,6 +244,7 @@ return [
         'start_at' => 'data de início',
         'rent' => 'venda',
         'sale' => 'locação',
+        'purpouse' => 'finalida',
 
         //PROPERTY
         "tribute" => "IPTU",

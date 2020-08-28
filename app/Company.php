@@ -46,6 +46,17 @@ class Company extends Model
         return substr($value, 0, 2) . '.' . substr($value, 2, 3) . '.' . substr($value, 5, 3) . '/' . substr($value, 8, 4) . '-' . substr($value, 12, 2);
     }
 
+    //no caso de CEP, temos que transformar para uma valor válido para o banco. EX: 65061450
+    public function setzipcodeAttribute($value)
+    {
+        $this->attributes['zipcode'] = $this->clearField($value);
+    }
+    //no caso de CEP, temos que transformar para uma valor válido para exibir. EX: 65061-450
+    public function getzipcodeAttribute($value)
+    {
+        return substr($value, 0, 5) . '-' . substr($value, 5, 3);
+    }
+
     //===================================================
     //FUNCOES PRIVADAS
     //===================================================

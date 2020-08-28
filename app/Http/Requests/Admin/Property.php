@@ -25,7 +25,7 @@ class Property extends FormRequest
     public function rules()
     {
         return [
-            "user" => "required", 
+            "user" => "required",
             "category" => "required",
             "type" => "required",
             "sale_price" => "required_if:sale,on", //ele é requerido somente se o campo sale for on
@@ -50,6 +50,8 @@ class Property extends FormRequest
             'neighborhood' => 'required',
             'state' => 'required',
             'city' => 'required',
+
+            'title' => 'required'
 
         ];
     }

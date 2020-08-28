@@ -39,6 +39,7 @@ class ContractController extends Controller
 
 
 
+
         $contractCreate = Contract::create($request->all());
 
         return redirect()->route('admin.contracts.edit', ['contract' => $contractCreate->id])

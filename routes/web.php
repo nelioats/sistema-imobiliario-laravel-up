@@ -815,3 +815,95 @@ Route::group(['prefix' => 'component', 'namespace' => 'Web', 'as' => 'component.
 //no arquivo Mail\Web\Contact.php, no metodo build(), iremos costruir o formato do email
 //o comando markdown é feito atraves uma view emails/contact.blade.php
 //por fim iremos criar a rota de return para mensagem de sucesso ou nao
+
+//==========================================================
+//API REST E JWT - JASON WEB TOKEN
+//==========================================================
+//trabalhando com o arquivo routes/api.php
+//trabalhando com as companias
+
+//iremos criar um controlador, com namespace(diretorio) Api e com o --api, onde ja gera automatico os metodos proprios para api, metodos de exibição, sem os metodos create e store
+//php artisan make:controller Api\\CompanyController --api
+
+//no routes/api.php iremos criar um grupo de rotas com algumas configurações
+//namespace = toda classe que for consumir tem que ta dentro do namespace definido. Ex: os controladores tem que estar dentro do diretorio API(namespace = API)
+//as = criar um prefixo para todos os names de rotas. Ex: name= api. home
+
+//dentro do controlador, no metodo index, usamos o model Company, para buscar todos as companias com helper All
+//no laravel ja existe o retorno json, return reponse()->json($variavel com a coleção)
+
+//protegedo as rotas da api com jwt
+//usando o https://github.com/tymondesigns/jwt-auth
+//executar o comando: composer require tymon/jwt-auth
+// Add the service provider to the providers array in the config/app.php config file as follows:
+// 'providers' => [
+//     Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+// ]
+//opcional para publicar todos arquivos de configuração - elel ira criar um arquivo jwt.php dentro de config
+//Publish the config: php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+//geraando a key: php artisan jwt:secret  - será criado uma chave dentro do arquvo .env
+
+//Update your User model em quick start no site, IMPLEMENTANDO O JWTSubject  e seus metodos
+
+//Configure Auth guard no arquivo config/auth.php
+
+//copiando as rotas do site
+//criar o controlador: php artisan make:controller AuthController
+
+//PROTEGENDO AS ROTAS DA API COM MIDDLEWARE
+//exceutar o codigo: php artisan make:middleware apiProtectedRoute
+//sera criado um middleaware dentro de app/http/controllers/middleware
+//colocar extends para BaseMiddleware
+//copiamos o bloco fornecido pela upinside
+//no arquivo kernel dentro do diretorio middleware, damos o apelido para nosso middleware
+//'apiProtected' => \App\Http\Middleware\apiPrtotectedRoute::class
+//nas rotas da api, criamos um grupo de rotas com o middleware para inserir as rotas, exceto a rota de login
+//verificando se o middleware foi configurado: php artisan rout:list
+
+//==========================================================
+//FAZENDO DEPLOY DO SISTEMA
+//==========================================================
+//antes de realizar o upoload, para mimificar os scripts - npm run production
+
+//==========================================================
+//SEEDERS PARA CRIAR USUARIOS NO BANCO
+//==========================================================
+//php artisan make:seeder AdminUserTableSeeder
+//criaçao de usuario sem factory
+//depois de configurar a seed, temos que executar, para isso chamamos a prorpia classe, com o seguinte comando
+//php artisan db:seed --class=AdminUserTableSeeder
+//***inserimos um metodo dentro do controlador AuthController para verificar se é um usuario Admin */
+//
+
+//==========================================================
+//PEGANDO O NOME DE QUEM TA LOGADO
+//==========================================================
+//Auth::user()->name;
+
+//==========================================================
+//INCREMENTANDO O NUMERO DE VISUALIZACOES DE CADA IMÓVEL
+//==========================================================
+//iremos adicionar uma coluna na tabela properties
+//php artisan make:migration add_properties_table_add_count_views --table=properties
+//dica: colocamos o valor da coluna com 0 zero com defautl, para nao colocar null e ter que fazer comparações apenas incrementar
+//rodando migration
+//php artisan migrate
+//dentro do controlador WebController, nos metodos rentProperty  e buyProperty iremos adicionar um incremento para a variavel views
+//por fim salvamos
+
+//==========================================================
+//perimitindo que o mesmo cpf seja cadastrado duas vezes no banco
+//==========================================================
+//$table->string('spouse_document')->unique()->nullable();
+//so remover o unique
+//caso aconteca da pessoa casada se divorciar e depois virar cliente da imobiliaria
+//$table->string('spouse_document')->nullable();]
+
+//==========================================================
+//caso for baixar o projeto da upinside,download do projeto
+//==========================================================
+//composer install ou composer update - para criar a pasta vendor
+//npm install - para criar a pasta node_modules
+//npm run dev - para testar se todas os scripts estao corretos
+//npm run production - para mimificar todos os scripts
+//php artisan storage:link

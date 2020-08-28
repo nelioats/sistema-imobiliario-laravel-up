@@ -160,7 +160,7 @@
 
                         <div class="realty_list_item_actions">
                             <ul>
-                                <li class="icon-eye">1234 Visualizações</li>
+                                <li class="icon-eye">{{$property->views}} Visualizações</li>
                             </ul>
                             <div>
                                 <a href="" class="btn btn-blue icon-eye">Visualizar Imóvel</a>

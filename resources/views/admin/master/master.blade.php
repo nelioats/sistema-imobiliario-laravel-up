@@ -33,7 +33,8 @@
 
 
 @php
-    if(File::exists(public_path().'/storage/'.Auth::user()->cover)){
+//se ele for diferente de vazio e se ele existir, carregar imagem
+    if(!empty(Auth::user()->cover) && File::exists(public_path().'/storage/'.Auth::user()->cover)){
         $cover = Auth::user()->url_cover;
     }else{
         $cover = url(asset('backend/assets/images/avatar.jpg'));
@@ -48,7 +49,7 @@
         <img class="dash_sidebar_user_thumb" src="{{ $cover }}" alt="" title=""/>
 
             <h1 class="dash_sidebar_user_name">
-                <a href="">NATS Web</a>
+                <a href="{{route('admin.users.edit',['user' => Auth::user()->id])}}">{{ Auth::user()->name}}</a>
             </h1>
         </article>
 
@@ -76,7 +77,7 @@
                     <li class="{{ isActive('admin.contracts.create') }}"><a href="{{route('admin.contracts.create')}}">Criar Novo</a></li>
                 </ul>
             </li>
-            <li class="dash_sidebar_nav_item"><a class="icon-reply" href="">Ver Site</a></li>
+        <li class="dash_sidebar_nav_item"><a class="icon-reply" href="{{route('web.home')}}" target="blank">Ver Site</a></li>
         <li class="dash_sidebar_nav_item"><a class="icon-sign-out on_mobile" href="{{route('admin.logout')}}" target="_blank">Sair</a></li>
         </ul>
 

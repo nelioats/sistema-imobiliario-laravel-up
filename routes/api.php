@@ -17,3 +17,19 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+
+Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
+
+    Route::post('/auth/login', 'AuthController@login')->name('login'); // a unica rota que nao precisamos verificar com middleware prq aq q ele ira se autenticar
+
+    Route::group(['middleware' => ['apiJwt']], function () {
+
+        Route::post('/me', 'AuthController@me')->name('me');
+        Route::post('/auth/logout', 'AuthController@logout')->name('logout');
+
+        Route::apiResource('/company', 'CompanyController'); //ja cria todas as rotas com seus names
+
+
+    });
+});

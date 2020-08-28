@@ -15,18 +15,18 @@ class CreatePropertiesTable extends Migration
     public function up()
     {
         Schema::create('properties', function (Blueprint $table) {
-            $table->id();
-            $table->boolean('sale')->nullable();//ela pode ser nula, pois não é obrigatorio sua marcação
-            $table->boolean('rent')->nullable();//ela pode ser nula, pois não é obrigatorio sua marcação
+            $table->bigIncrements('id');
+            $table->boolean('sale')->nullable(); //ela pode ser nula, pois não é obrigatorio sua marcação
+            $table->boolean('rent')->nullable(); //ela pode ser nula, pois não é obrigatorio sua marcação
             $table->string('category');
             $table->string('type');
-            $table->unsignedInteger('user');//chave estrangeira - inteiro que nao pode ser negativo
+            $table->unsignedBigInteger('user'); //chave estrangeira - inteiro que nao pode ser negativo
 
             //preços e valores
-            $table->decimal('sale_price',10,2)->nullable();//('campo',tamanho,casas decimais)
-            $table->decimal('rent_price',10,2)->nullable();//('campo',tamanho,casas decimais)
-            $table->decimal('tribute',10,2)->nullable();//('campo',tamanho,casas decimais)
-            $table->decimal('condominium',10,2)->nullable();//('campo',tamanho,casas decimais)
+            $table->decimal('sale_price', 10, 2)->nullable(); //('campo',tamanho,casas decimais)
+            $table->decimal('rent_price', 10, 2)->nullable(); //('campo',tamanho,casas decimais)
+            $table->decimal('tribute', 10, 2)->nullable(); //('campo',tamanho,casas decimais)
+            $table->decimal('condominium', 10, 2)->nullable(); //('campo',tamanho,casas decimais)
 
             //description
             $table->text('description')->nullable();
@@ -71,7 +71,6 @@ class CreatePropertiesTable extends Migration
             //criando a relação com a tabela usuarios 
             //$table->foreign('user')->references('id da tabela users')->on('tabela que faz referencia -> users')->onDelete('CASCADE');
             $table->foreign('user')->references('id')->on('users')->onDelete('CASCADE');
-
         });
     }
 

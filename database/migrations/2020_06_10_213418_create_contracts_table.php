@@ -15,21 +15,20 @@ class CreateContractsTable extends Migration
     public function up()
     {
         Schema::create('contracts', function (Blueprint $table) {
-            $table->id();
-            $table->boolean('sale');
-            $table->boolean('rent');
-            $table->unsignedInteger('owner');
+            $table->bigIncrements('id');
+            $table->string('purpouse');
+            $table->unsignedBigInteger('owner');
             $table->boolean('owner_spouse')->nullable();
-            $table->unsignedInteger('owner_company')->nullable();
-            $table->unsignedInteger('acquirer');
+            $table->unsignedBigInteger('owner_company')->nullable();
+            $table->unsignedBigInteger('acquirer');
             $table->boolean('acquirer_spouse')->nullable();
-            $table->unsignedInteger('acquirer_company')->nullable();
-            $table->unsignedInteger('property');
+            $table->unsignedBigInteger('acquirer_company')->nullable();
+            $table->unsignedBigInteger('property');
             $table->double('price');
             $table->double('tribute');
             $table->double('condominium');
-            $table->unsignedInteger('due_date');
-            $table->unsignedInteger('deadline');
+            $table->unsignedBigInteger('due_date');
+            $table->unsignedBigInteger('deadline');
             $table->date('start_at');
             $table->timestamps();
 

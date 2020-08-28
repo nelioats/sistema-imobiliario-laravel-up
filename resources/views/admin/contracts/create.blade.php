@@ -77,11 +77,11 @@
                         <div class="label_gc">
                             <span class="legend">Finalidade:</span>
                             <label class="label">
-                                <input type="checkbox" name="sale" {{(old('sale') == 'on'? 'checked' : '')}}><span>Venda</span>
+                                <input type="radio" name="purpouse" value="sale" {{(old('purpouse') == 'on'? 'checked' : '')}} ><span>Venda</span>
                             </label>
 
                             <label class="label">
-                                <input type="checkbox" name="rent" {{(old('rent') == 'on'? 'checked' : '')}}><span>Locação</span>
+                                <input type="radio" name="purpouse" value="rent" {{(old('purpouse') == 'on'? 'checked' : '')}}><span>Locação</span>
                             </label>
                         </div>
 

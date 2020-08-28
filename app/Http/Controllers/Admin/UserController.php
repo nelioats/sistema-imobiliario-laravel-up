@@ -77,6 +77,8 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
 
+        //dd($request->all());
+
         $user = User::where('id', $id)->first();
         //usamos o setLessorAttribute para verificar se o atributo foi selecionado. Se sim, usamos a funcao setLessorAttribute
         $user->setLessorAttribute($request->lessor);

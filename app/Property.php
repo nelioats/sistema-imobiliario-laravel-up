@@ -317,6 +317,18 @@ class Property extends Model
     }
 
 
+    //no caso de CEP, temos que transformar para uma valor válido para o banco. EX: 65061450
+    public function setzipcodeAttribute($value)
+    {
+        $this->attributes['zipcode'] = $this->clearField($value);
+    }
+    //no caso de CEP, temos que transformar para uma valor válido para exibir. EX: 65061-450
+    public function getzipcodeAttribute($value)
+    {
+        return substr($value, 0, 5) . '-' . substr($value, 5, 3);
+    }
+
+
 
 
     //===================================================
@@ -351,6 +363,13 @@ class Property extends Model
             return null;
         }
         return str_replace(',', '.', str_replace(['.'], '', $param));
+    }
+    private function clearField(?string $param)
+    {
+        if (empty($param)) {
+            return '';
+        }
+        return str_replace(['.', '-', '/', '(', ')', ' '], '', $param);
     }
 
 

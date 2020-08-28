@@ -15,7 +15,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        
     }
 
     /**
@@ -25,8 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //colocamos esse campo para definir o tamanho da string no banco como 191
         Schema::defaultStringLength(191);
-
-
     }
 }

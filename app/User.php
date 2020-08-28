@@ -11,7 +11,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
@@ -92,6 +94,12 @@ class User extends Authenticatable
         //um para muitos = um usuario pode ter varios imoveis
         //um para muitos(Qual modelo quero me relacionar,  'qual id desse modelo me faz referencia'   , 'qual meu id faz referencia a ele')
         return $this->hasMany(Property::class, 'user', 'id');
+    }
+
+    //criando relacionamento contratos como locador,hasmany, mais de um contrato por um imovel
+    public function contractsAsAcquirer()
+    {
+        return $this->hasMany(Contract::class, 'acquirer', 'id');
     }
 
 
@@ -279,6 +287,15 @@ class User extends Authenticatable
         if ($value == 'single') {
             return 'solteiro(a)';
         }
+        if ($value == 'single') {
+            return 'single';
+        }
+        if ($value == 'divorced') {
+            return 'divorced';
+        }
+        if ($value == 'widower') {
+            return 'widower';
+        }
     }
 
     //===================================================
@@ -300,6 +317,11 @@ class User extends Authenticatable
             return '';
         }
     }
+    //no caso de CEP, temos que transformar para uma valor válido para exibir. EX: 65061-450
+    public function getzipcodeAttribute($value)
+    {
+        return substr($value, 0, 5) . '-' . substr($value, 5, 3);
+    }
 
     //===================================================
     //SCOPES
@@ -315,5 +337,19 @@ class User extends Authenticatable
     public function scopeLessees($query)
     {
         return $query->where('lessee', true);
+    }
+
+    //===================================================
+    //CONFIGURANDO A PROTEÇÃO DA API
+    //===================================================
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

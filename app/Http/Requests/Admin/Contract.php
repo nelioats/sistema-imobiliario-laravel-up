@@ -27,6 +27,7 @@ class Contract extends FormRequest
         return [
             'owner' => 'required',
             'acquirer' => 'required|different:owner', //ele é obrigatorio e diferente do owner
+            'purpouse' => 'required',
             'sale_price' => 'required_if:sale,on', //ele é requerido se sale estiver checado
             'rent_price' => 'required_if:rent,on',
             'property' => 'required|integer',

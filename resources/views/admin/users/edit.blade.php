@@ -149,17 +149,19 @@
                                 <span class="legend">*Estado Civil:</span>
                                 <select name="civil_status">
                                     <optgroup label="Cônjuge Obrigatório">
-                                        <option value="married" {{ (old('civil_status') == 'married' ? 'selected':($user->civil_status == 'married' ? 'selected': '')) }}>Casado</option>
+                                        <option value="married" {{ (old('civil_status') == 'married' ? 'selected':($user->civil_status == 'casado(a)' ? 'selected': '')) }}>Casado</option>
                                         <option value="separated" {{ (old('civil_status') == 'separated' ? 'selected':($user->civil_status == 'separated' ? 'selected': '')) }}>Separado</option>
                                     </optgroup>
                                     <optgroup label="Cônjuge não Obrigatório">
-                                        <option value="single" {{ (old('civil_status') == 'single' ? 'selected':($user->civil_status == 'single' ? 'selected': '')) }}>Solteiro</option>
+                                        <option value="single" {{ (old('civil_status') == 'single' ? 'selected':($user->civil_status == 'solteiro(a)' ? 'selected': '')) }}>Solteiro</option>
                                         <option value="divorced" {{ (old('civil_status') == 'divorced' ? 'selected':($user->civil_status == 'divorced' ? 'selected': '')) }}>Divorciado</option>
                                         <option value="widower" {{ (old('civil_status') == 'widower' ? 'selected':($user->civil_status == 'widower' ? 'selected': '')) }}>Viúvo</option>
                                     </optgroup>
                                 </select>
                             </label>
-
+                            @php
+                            
+                            @endphp
                             <label class="label">
                                 <span class="legend">Foto</span>
                                 <input type="file" name="cover">
@@ -450,86 +452,98 @@
 
                                     
                                         {{-- listar todos imoveis vinculados ao usuario --}}
-                                        @if ($user->properties()->get())
-                                        @foreach ($user->properties()->get() as $property)
-                                            
+                                        @if ($user->properties()->get()->isNotEmpty())
+                                         
+                                                @foreach ($user->properties()->get() as $property)
+                                                    
 
-                              
-                                        <div class="realty_list_item mb-1">
-                                            <div class="realty_list_item_actions_stats">
-                                                <img src="{{$property->cover()}}" alt="">
-                                                <ul>
-                                                      {{-- se  o imovel for para venda e existir o valor , vai ser apresentado o valor--}}
-                                                        @if ($property->sale == true && !empty($property->sale_price))
-                                                             <li>Venda: R$ {{$property->sale_price}}</li>
-                                                         @endif
+                                    
+                                                <div class="realty_list_item mb-1">
+                                                    <div class="realty_list_item_actions_stats">
+                                                        <img src="{{$property->cover()}}" alt="">
+                                                        <ul>
+                                                            {{-- se  o imovel for para venda e existir o valor , vai ser apresentado o valor--}}
+                                                                @if ($property->sale == true && !empty($property->sale_price))
+                                                                    <li>Venda: R$ {{$property->sale_price}}</li>
+                                                                @endif
 
-                                                    {{-- se  o imovel for para venda e existir o valor, vai ser apresentado o valor --}}
-                                                        @if ($property->rent == true && !empty($property->rent_price))
-                                                            <li>Aluguel: R$ {{$property->rent_price}}</li>
-                                                        @endif
-                                                </ul>
-                                            </div>
-
-                                            <div class="realty_list_item_content">
-                                                <h4># {{$property->id}} {{$property->category}} - {{$property->type}}</h4>
-
-                                                <div class="realty_list_item_card">
-                                                    <div class="realty_list_item_card_image">
-                                                        <span class="icon-realty-location"></span>
+                                                            {{-- se  o imovel for para venda e existir o valor, vai ser apresentado o valor --}}
+                                                                @if ($property->rent == true && !empty($property->rent_price))
+                                                                    <li>Aluguel: R$ {{$property->rent_price}}</li>
+                                                                @endif
+                                                        </ul>
                                                     </div>
-                                                    <div class="realty_list_item_card_content">
-                                                        <span class="realty_list_item_description_title">Bairro: </span>
-                                                        <span class="realty_list_item_description_content">{{$property->neighborhood}}</span>
+
+                                                    <div class="realty_list_item_content">
+                                                        <h4># {{$property->id}} {{$property->category}} - {{$property->type}}</h4>
+
+                                                        <div class="realty_list_item_card">
+                                                            <div class="realty_list_item_card_image">
+                                                                <span class="icon-realty-location"></span>
+                                                            </div>
+                                                            <div class="realty_list_item_card_content">
+                                                                <span class="realty_list_item_description_title">Bairro: </span>
+                                                                <span class="realty_list_item_description_content">{{$property->neighborhood}}</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="realty_list_item_card">
+                                                            <div class="realty_list_item_card_image">
+                                                                <span class="icon-realty-util-area"></span>
+                                                            </div>
+                                                            <div class="realty_list_item_card_content">
+                                                                <span class="realty_list_item_description_title">Área Útil:</span>
+                                                                <span class="realty_list_item_description_content">{{$property->area_util}}m&sup2;</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="realty_list_item_card">
+                                                            <div class="realty_list_item_card_image">
+                                                                <span class="icon-realty-bed"></span>
+                                                            </div>
+                                                            <div class="realty_list_item_card_content">
+                                                                <span class="realty_list_item_description_title">Domitórios:</span>
+                                                                <span class="realty_list_item_description_content">{{$property->bathrooms + $property->suites}} Quartos<br><span>Sendo {{$property->suites}} suítes</span></span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="realty_list_item_card">
+                                                            <div class="realty_list_item_card_image">
+                                                                <span class="icon-realty-garage"></span>
+                                                            </div>
+                                                            <div class="realty_list_item_card_content">
+                                                                <span class="realty_list_item_description_title">Garagem:</span>
+                                                                <span class="realty_list_item_description_content">{{$property->garage + $property->garage_covered}} Vagas<br><span>Sendo {{$property->garage_covered}} cobertas</span></span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="realty_list_item_actions">
+                                                        <ul>
+                                                            <li class="icon-eye">{{$property->views}} Visualizações</li>
+                                                        </ul>
+                                                        <div>
+
+                                                            @if ($property->sale == true && !empty($property->sale_price))
+                                                                <a href="{{ route('web.buyProperty',['slug' => $property->slug]) }}" target="blank" class="btn btn-blue icon-eye">Visualizar Imóvel (compra)</a>
+                                                                
+                                                            @endif
+
+                                                        {{-- se  o imovel for para venda e existir o valor, vai ser apresentado o valor --}}
+                                                            @if ($property->rent == true && !empty($property->rent_price))
+                                                                <a href="{{ route('web.rentProperty',['slug' => $property->slug]) }}" target="blank" class="btn btn-blue icon-eye">Visualizar Imóvel (aluguel)</a>
+                                                            @endif
+
+                                                        
+                                                            <a href="{{route('admin.properties.edit',['property' => $property->id])}}" class="btn btn-green icon-pencil-square-o">Editar
+                                                                Imóvel</a>
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="realty_list_item_card">
-                                                    <div class="realty_list_item_card_image">
-                                                        <span class="icon-realty-util-area"></span>
-                                                    </div>
-                                                    <div class="realty_list_item_card_content">
-                                                        <span class="realty_list_item_description_title">Área Útil:</span>
-                                                        <span class="realty_list_item_description_content">{{$property->area_util}}m&sup2;</span>
-                                                    </div>
-                                                </div>
 
-                                                <div class="realty_list_item_card">
-                                                    <div class="realty_list_item_card_image">
-                                                        <span class="icon-realty-bed"></span>
-                                                    </div>
-                                                    <div class="realty_list_item_card_content">
-                                                        <span class="realty_list_item_description_title">Domitórios:</span>
-                                                        <span class="realty_list_item_description_content">{{$property->bathrooms + $property->suites}} Quartos<br><span>Sendo {{$property->suites}} suítes</span></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="realty_list_item_card">
-                                                    <div class="realty_list_item_card_image">
-                                                        <span class="icon-realty-garage"></span>
-                                                    </div>
-                                                    <div class="realty_list_item_card_content">
-                                                        <span class="realty_list_item_description_title">Garagem:</span>
-                                                        <span class="realty_list_item_description_content">{{$property->garage + $property->garage_covered}} Vagas<br><span>Sendo {{$property->garage_covered}} cobertas</span></span>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="realty_list_item_actions">
-                                                <ul>
-                                                    <li class="icon-eye">1234 Visualizações</li>
-                                                </ul>
-                                                <div>
-                                                    <a href="" class="btn btn-blue icon-eye">Visualizar Imóvel</a>
-                                                     <a href="{{route('admin.properties.edit',['property' => $property->id])}}" class="btn btn-green icon-pencil-square-o">Editar
-                                                        Imóvel</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        @endforeach
+                                                @endforeach
   
                                         @else
 
@@ -552,7 +566,118 @@
 
                             <div class="app_collapse_content">
                                 <div id="realties">
-                                    <div class="no-content">Não foram encontrados registros!</div>
+
+
+                                    <div class="realty_list">
+
+
+                                    
+                                        {{-- listar todos imoveis vinculados ao usuario --}}
+                                        @if ($user->contractsAsAcquirer()->get()->isNotEmpty())
+                                            @foreach ($user->contractsAsAcquirer()->get() as $contract)
+
+                                                @if ($property = $contract->propertyObject()->first())
+                                            
+                                
+                                                    <div class="realty_list_item mb-1">
+                                                        <div class="realty_list_item_actions_stats">
+                                                            <img src="{{$property->cover()}}" alt="">
+                                                            <ul>
+                                                                {{-- se  o imovel for para venda e existir o valor , vai ser apresentado o valor--}}
+                                                                    @if ($property->sale == true && !empty($property->sale_price))
+                                                                        <li>Venda: R$ {{$property->sale_price}}</li>
+                                                                    @endif
+
+                                                                {{-- se  o imovel for para venda e existir o valor, vai ser apresentado o valor --}}
+                                                                    @if ($property->rent == true && !empty($property->rent_price))
+                                                                        <li>Aluguel: R$ {{$property->rent_price}}</li>
+                                                                    @endif
+                                                            </ul>
+                                                        </div>
+
+                                                        <div class="realty_list_item_content">
+                                                            <h4># {{$property->id}} {{$property->category}} - {{$property->type}}</h4>
+
+                                                            <div class="realty_list_item_card">
+                                                                <div class="realty_list_item_card_image">
+                                                                    <span class="icon-realty-location"></span>
+                                                                </div>
+                                                                <div class="realty_list_item_card_content">
+                                                                    <span class="realty_list_item_description_title">Bairro: </span>
+                                                                    <span class="realty_list_item_description_content">{{$property->neighborhood}}</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="realty_list_item_card">
+                                                                <div class="realty_list_item_card_image">
+                                                                    <span class="icon-realty-util-area"></span>
+                                                                </div>
+                                                                <div class="realty_list_item_card_content">
+                                                                    <span class="realty_list_item_description_title">Área Útil:</span>
+                                                                    <span class="realty_list_item_description_content">{{$property->area_util}}m&sup2;</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="realty_list_item_card">
+                                                                <div class="realty_list_item_card_image">
+                                                                    <span class="icon-realty-bed"></span>
+                                                                </div>
+                                                                <div class="realty_list_item_card_content">
+                                                                    <span class="realty_list_item_description_title">Domitórios:</span>
+                                                                    <span class="realty_list_item_description_content">{{$property->bathrooms + $property->suites}} Quartos<br><span>Sendo {{$property->suites}} suítes</span></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="realty_list_item_card">
+                                                                <div class="realty_list_item_card_image">
+                                                                    <span class="icon-realty-garage"></span>
+                                                                </div>
+                                                                <div class="realty_list_item_card_content">
+                                                                    <span class="realty_list_item_description_title">Garagem:</span>
+                                                                    <span class="realty_list_item_description_content">{{$property->garage + $property->garage_covered}} Vagas<br><span>Sendo {{$property->garage_covered}} cobertas</span></span>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="realty_list_item_actions">
+                                                            <ul>
+                                                                <li class="icon-eye">{{$property->views}} Visualizações</li>
+                                                            </ul>
+                                                            <div>
+
+                                                                @if ($property->sale == true && !empty($property->sale_price))
+                                                                    <a href="{{ route('web.buyProperty',['slug' => $property->slug]) }}" target="blank" class="btn btn-blue icon-eye">Visualizar Imóvel (compra)</a>
+                                                                    
+                                                                @endif
+
+                                                            {{-- se  o imovel for para venda e existir o valor, vai ser apresentado o valor --}}
+                                                                @if ($property->rent == true && !empty($property->rent_price))
+                                                                    <a href="{{ route('web.rentProperty',['slug' => $property->slug]) }}" target="blank" class="btn btn-blue icon-eye">Visualizar Imóvel (aluguel)</a>
+                                                                @endif
+
+                                                            
+                                                                <a href="{{route('admin.properties.edit',['property' => $property->id])}}" class="btn btn-green icon-pencil-square-o">Editar
+                                                                    Imóvel</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                @endif
+                                            @endforeach
+   
+                                        
+                                        @else 
+
+                                        <div class="no-content">Não foram encontrados registros!</div>
+
+                                        @endif
+
+
+                                    </div>
+
+
+
                                 </div>
                             </div>
                         </div>

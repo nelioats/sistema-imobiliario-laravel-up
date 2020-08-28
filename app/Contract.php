@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contract extends Model
 {
     protected $fillable = [
-        'sale',
-        'rent',
+        'purpouse',
         'owner',
         'owner_spouse',
         'owner_company',
@@ -73,21 +72,32 @@ class Contract extends Model
     //=================================================================================
 
     //definimos sale = 1 e rent como 0, pois nao podem ser selcionados os dois ao mesmo tempo
-    public function setSaleAttribute($value)
+    // public function setSaleAttribute($value)
+    // {
+    //     if ($value === true || $value === 'on') {
+    //         $this->attributes['sale'] = 1;
+    //         $this->attributes['rent'] = 0;
+    //     }
+    // }
+    // //definimos sale = 1 e rent como 0, pois nao podem ser selcionados os dois ao mesmo tempo
+    // public function setRentAttribute($value)
+    // {
+    //     if ($value === true || $value === 'on') {
+    //         $this->attributes['rent'] = 1;
+    //         $this->attributes['sale'] = 0;
+    //     }
+    // }
+
+    public function setPurpouseAttribute($value)
     {
-        if ($value === true || $value === 'on') {
-            $this->attributes['sale'] = 1;
-            $this->attributes['rent'] = 0;
+        if ($value == 'sale') {
+            $this->attributes['purpouse'] = 'sale';
+        } else {
+            $this->attributes['purpouse'] = 'rent';
         }
     }
-    //definimos sale = 1 e rent como 0, pois nao podem ser selcionados os dois ao mesmo tempo
-    public function setRentAttribute($value)
-    {
-        if ($value === true || $value === 'on') {
-            $this->attributes['rent'] = 1;
-            $this->attributes['sale'] = 0;
-        }
-    }
+
+
     //como no banco o Owner Spouse é um boolean, pois ele é casado ou nao. Temos que salvar no banco como 1(true) ou 0(false)
     public function setOwnerSpouseAttribute($value)
     {
@@ -238,7 +248,7 @@ class Contract extends Model
     public function terms()
     {
         // Finalidade [Venda/Locação]
-        if ($this->sale == true) {
+        if ($this->purpouse == 'sale') {
             $parameters = [
                 'purpouse' => 'VENDA',
                 'part' => 'VENDEDOR',
@@ -246,7 +256,7 @@ class Contract extends Model
             ];
         }
 
-        if ($this->rent == true) {
+        if ($this->purpouse == 'rent') {
             $parameters = [
                 'purpouse' => 'LOCAÇÃO',
                 'part' => 'LOCADOR',

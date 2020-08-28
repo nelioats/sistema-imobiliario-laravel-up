@@ -428,6 +428,7 @@ class FilterController extends Controller
         //retornar os valores da tabela selecionada de acordo com o valor recebido pela variavel search js
         //when - quando
         return DB::table('properties')
+            ->where('status', '=', '1') //retirar do resultado da psquisa todos imoveis com status 0, ou seja, indisponivel
             ->when($sale, function ($query, $sale) {
                 return $query->where('sale', $sale);
             })

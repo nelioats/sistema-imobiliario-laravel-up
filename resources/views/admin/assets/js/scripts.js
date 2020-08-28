@@ -278,26 +278,45 @@ $('select[name="civil_status"]').change(function() {
 //====================================================================
 
 //====================================================================
-//SCRIPT PARA OS CHECKBOX  SALE E RENT
+//SCRIPT PARA OS CHECKBOX  SALE E RENT - ***ANTES DA MUDANCA PARA RAIO****
 //para desativar ou ativar os inputs relacionados a esses checkox - sale_price  e rent_price
 //====================================================================
 
-$('input[type="checkbox"][name="sale"]').change(function() {
-    // se le tiver checado
-    //get(0) primeiro elemento
-    //liberar para edicao o campo sale_price
-    if ($(this).get(0).checked) {
+// $('input[type="checkbox"][name="sale"]').change(function() {
+//     // se le tiver checado
+//     //get(0) primeiro elemento
+//     //liberar para edicao o campo sale_price
+//     if ($(this).get(0).checked) {
+//         $('input[name="sale_price"]').attr("disabled", false);
+//     } else {
+//         $('input[name="sale_price"]').attr("disabled", true);
+//     }
+// });
+
+// $('input[type="checkbox"][name="rent"]').change(function() {
+//     // se le tiver checado
+//     //get(0) primeiro elemento
+//     //liberar para edicao o campo sale_price
+//     if ($(this).get(0).checked) {
+//         $('input[name="rent_price"]').attr("disabled", false);
+//     } else {
+//         $('input[name="rent_price"]').attr("disabled", true);
+//     }
+// });
+
+//====================================================================
+//SCRIPT PARA O RADIO PURPOUSE DA PAGINA CREATE E EDIT CONTRATO*
+//para desativar ou ativar os inputs relacionados a esse RADIO
+//====================================================================
+
+$('input[type="radio"][name="purpouse"]').change(function() {
+    //caso seja selecionado a opcao sale, a opcao disable nao existe, ou seja será liberado esse campo
+    if ($(this).val() == "sale") {
         $('input[name="sale_price"]').attr("disabled", false);
     } else {
         $('input[name="sale_price"]').attr("disabled", true);
     }
-});
-
-$('input[type="checkbox"][name="rent"]').change(function() {
-    // se le tiver checado
-    //get(0) primeiro elemento
-    //liberar para edicao o campo sale_price
-    if ($(this).get(0).checked) {
+    if ($(this).val() == "rent") {
         $('input[name="rent_price"]').attr("disabled", false);
     } else {
         $('input[name="rent_price"]').attr("disabled", true);

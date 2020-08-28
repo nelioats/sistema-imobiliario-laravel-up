@@ -295,9 +295,9 @@
 <script>
 
 
-$(document).ready(function(){
-    delete $.ajaxSettings.headers["X-CSRF-TOKEN"];
-});
+// $(document).ready(function(){
+//     delete $.ajaxSettings.headers["X-CSRF-TOKEN"];
+// });
 
 
 
